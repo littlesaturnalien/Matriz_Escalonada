@@ -3,6 +3,7 @@ class GaussJordan():
         self.matriz = matriz
         self.filas = len(matriz)
         self.columnas = len(matriz[0])
+        self.filas_pivotes = set()
     
     @staticmethod
     def crear_matriz(cantFilas: int, cantColum: int) -> list[list[float]]:
@@ -29,55 +30,69 @@ class GaussJordan():
     
     def gauss_jordan(self):
         for col in range(self.columnas - 1):
-            if col >= self.filas:
-                break  # Si el número de columnas excede el número de filas, salimos del bucle
             if not self.convertir_a_1(col):
                 print(f"No se puede encontrar un pivote adecuado en la columna {col+1}.")
                 continue
             self.reduccion_a_cero(col)
                 
-    
     def intercambio(self, fila, fila_intercambio) -> None:
         temp = self.matriz[fila]
         self.matriz[fila] = self.matriz[fila_intercambio]
         self.matriz[fila_intercambio] = temp
         print(f"\nF{fila + 1} <--> F{fila_intercambio + 1}\n")
         self.imprimir_matriz()
+
+        self.filas_pivotes.remove(fila)
+        self.filas_pivotes.add(fila_intercambio)
     
     def pivote(self, col : int) -> int | bool:
-        for fila in range(col, self.filas):
-            if self.matriz[fila][col] != 0:
+        for fila in range(self.filas):
+            if self.matriz[fila][col] != 0 and fila not in self.filas_pivotes:
+                self.filas_pivotes.add(fila)
                 return fila
         return False
 
 
     def convertir_a_1(self, col : int) -> bool:
         pivote_fila = self.pivote(col)
-        if not pivote_fila:
+        if pivote_fila is False:
             return False
         
         pivote = self.matriz[pivote_fila][col]
-        
-        if pivote != 0:
-            if pivote != 1:
-                self.matriz[pivote_fila] = [x / pivote for x in self.matriz[pivote_fila]]
-                print(f"\nF{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.1f}'}\n")
-                self.imprimir_matriz()
+    
+        if pivote != 1:
+            self.matriz[pivote_fila] = [x / pivote for x in self.matriz[pivote_fila]]
+            print(f"\nF{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.1f}'}\n")
+            self.imprimir_matriz()
 
-            if pivote_fila != col:
-                self.intercambio(col, pivote_fila)
+        if pivote_fila != col and pivote_fila not in self.filas_pivotes:
+            self.intercambio(col, pivote_fila)
+
         return True
 
     
     #Cuando hay columna pivote
     def reduccion_a_cero(self, col : int):
+        pivote_fila = None
+        for fila in self.filas_pivotes:
+            if self.matriz[fila][col] == 1:
+                pivote_fila = fila
+                break
+
         for fila in range(self.filas):
-            if fila == col: continue
+            if fila == pivote_fila: continue
             if self.matriz[fila][col] == 0: continue
             operando = self.matriz[fila][col] * -1
-            operando_tipo = int(operando) if operando.is_integer() else round(operando, 1)
-            self.matriz[fila] = [self.matriz[fila][i] + (operando * self.matriz[col][i]) for i in range(self.columnas)]
-            print(f"\nF{fila+1} -> F{fila+1}{" + " if operando > 0 else " - "}{operando_tipo if operando > 0 else operando_tipo*-1}F{col+1}\n")
+            operando_tipo = int(operando) if operando.is_integer() else f"{operando:.1f}"
+            self.matriz[fila] = [self.matriz[fila][i] + (operando * self.matriz[pivote_fila][i]) for i in range(self.columnas)]
+
+            if operando > 0:
+                operador = "+"
+            else:
+                operador = "-"
+                operando_tipo = -operando_tipo
+            
+            print(f"\nF{fila + 1} -> F{fila + 1} {operador} {operando_tipo}F{pivote_fila + 1}\n")
             self.imprimir_matriz()
     
     
@@ -93,13 +108,13 @@ class GaussJordan():
                 self.variables_libres()
                 return
 
-            print("\nLa matriz tiene una solución única:\n")
-            soluciones = []
-            for fila in range(self.filas):
-                if fila < self.columnas - 1:
-                    soluciones.append(self.matriz[fila][-1])
-            for i, sol in enumerate(soluciones):
-                print(f"X{i+1} = {int(sol) if sol.is_integer() else f'{sol:.1f}'}")
+        print("\nLa matriz tiene una solución única:\n")
+        soluciones = []
+        for fila in range(self.filas):
+            if fila < self.columnas - 1:
+                soluciones.append(self.matriz[fila][-1])
+        for i, sol in enumerate(soluciones):
+            print(f"X{i+1} = {int(sol) if sol.is_integer() else f'{sol:.1f}'}")
 
     def variables_libres(self):
         columnas_pivotes = []
@@ -116,14 +131,19 @@ class GaussJordan():
                 for fila in range(self.filas):
                     if self.matriz[fila][col] == 1:
                         resultado = self.matriz[fila][-1]
-                        expr = f"X{fila+1} = " + ((f"{int(resultado) if resultado.is_integer() else f'{resultado:.1f}'} ") 
+                        expr = f"X{col+1} = " + ((f"{int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}") 
                                                   if resultado != 0 else "")
                         for i, valor in enumerate(self.matriz[fila][:-1]):
                             if i in variables_libres and valor != 0:
-                                expr += f"{"-" if valor > 0 else ("+" if resultado != 0 else "")} ({int(valor) if valor.is_integer() else f'{valor:.1f}'})X{i+1}"
+                                if valor > 0:
+                                    operador = " -"
+                                else:
+                                    operador = " +"
+                                    valor = -valor
+                                expr += f"{operador} ({int(valor) if valor.is_integer() else f'{valor:.1f}'})X{i+1}"
                         print(expr)
             elif col in variables_libres:
-                print(f"X{i + 1} es una variable libre")
+                print(f"X{col + 1} es una variable libre")
         
 
     def imprimir_matriz(self):
