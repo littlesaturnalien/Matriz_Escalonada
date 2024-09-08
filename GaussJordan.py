@@ -36,12 +36,10 @@ class GaussJordan():
             self.reduccion_a_cero(col)
                 
     def intercambio(self, fila, fila_intercambio) -> None:
-        temp = self.matriz[fila]
-        self.matriz[fila] = self.matriz[fila_intercambio]
-        self.matriz[fila_intercambio] = temp
+        #No es necesario crear variables temporales
+        self.matriz[fila],self.matriz[fila_intercambio] = self.matriz[fila_intercambio],self.matriz[fila]
         print(f"\nF{fila + 1} <--> F{fila_intercambio + 1}\n")
         self.imprimir_matriz()
-
         self.filas_pivotes.remove(fila)
         self.filas_pivotes.add(fila_intercambio)
     
@@ -60,10 +58,11 @@ class GaussJordan():
         
         pivote = self.matriz[pivote_fila][col]
     
-        if pivote != 1:
-            self.matriz[pivote_fila] = [x / pivote for x in self.matriz[pivote_fila]]
-            print(f"\nF{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.1f}'}\n")
-            self.imprimir_matriz()
+        if pivote == 1: return True
+
+        self.matriz[pivote_fila] = [x / pivote for x in self.matriz[pivote_fila]]
+        print(f"\nF{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.1f}'}\n")
+        self.imprimir_matriz()
 
         if pivote_fila != col and pivote_fila not in self.filas_pivotes:
             self.intercambio(col, pivote_fila)
@@ -91,7 +90,7 @@ class GaussJordan():
             else:
                 operador = "-"
                 operando_tipo = -operando_tipo
-            
+
             print(f"\nF{fila + 1} -> F{fila + 1} {operador} {operando_tipo}F{pivote_fila + 1}\n")
             self.imprimir_matriz()
     
@@ -120,30 +119,27 @@ class GaussJordan():
         columnas_pivotes = []
         for fila in range(self.filas):
             for col in range(self.columnas - 1):
-                if self.matriz[fila][col] == 1 and all(self.matriz[fila][i] == 0 for i in range(col)):
-                    columnas_pivotes.append(col)
-                    break
-        
-        variables_libres = [i for i in range(self.columnas - 1) if i not in columnas_pivotes]
+                if self.matriz[fila][col] !=1: continue
+                if any(self.matriz[fila][i] != 0 for i in range(col)): continue
+                columnas_pivotes.append(col)
+                break
 
         for col in range(self.columnas - 1):
-            if col in columnas_pivotes:
-                for fila in range(self.filas):
-                    if self.matriz[fila][col] == 1:
-                        resultado = self.matriz[fila][-1]
-                        expr = f"X{col+1} = " + ((f"{int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}") 
-                                                  if resultado != 0 else "")
-                        for i, valor in enumerate(self.matriz[fila][:-1]):
-                            if i in variables_libres and valor != 0:
-                                if valor > 0:
-                                    operador = " -"
-                                else:
-                                    operador = " +"
-                                    valor = -valor
-                                expr += f"{operador} ({int(valor) if valor.is_integer() else f'{valor:.1f}'})X{i+1}"
-                        print(expr)
-            elif col in variables_libres:
-                print(f"X{col + 1} es una variable libre")
+            if col not in columnas_pivotes:
+                print(f'X{col+1} es una variable libre')
+                continue
+            for fila in range(self.filas):
+                if self.matriz[fila][col] != 1: 
+                    continue
+                resultado = self.matriz[fila][-1]
+                expr = f"X{col+1} = " + ((f"{int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}") 
+                                          if resultado != 0 else "")
+                for i, valor in enumerate(self.matriz[fila][:-1]):
+                    if i in columnas_pivotes: continue
+                    if valor == 0: continue
+                    operador, valor = (" -",valor) if valor > 0 else(" +",-valor)
+                    expr += f"{operador} ({int(valor) if valor.is_integer() else f'{valor:.1f}'})X{i+1}"
+                print(expr)
         
 
     def imprimir_matriz(self):
