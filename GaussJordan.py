@@ -36,17 +36,16 @@ class GaussJordan():
 
         for col in range(self.columnas - 1):
             if not self.convertir_a_1(col):
-                print(f"No se puede encontrar un pivote adecuado en la columna {col+1}.")
+                print(f"\nNo se puede encontrar un pivote adecuado en la columna {col+1}.")
                 continue
             self.reduccion_a_cero(col)
                 
+
     def intercambio(self, fila, fila_intercambio) -> None:
         '''Es una función que no devuelve nada.
         Tiene como parámetros el índice de la fila sin pivote y el índice de la fila con pivote para intercambiarlas.'''
 
-        temp = self.matriz[fila]
-        self.matriz[fila] = self.matriz[fila_intercambio]
-        self.matriz[fila_intercambio] = temp
+        self.matriz[fila],self.matriz[fila_intercambio] = self.matriz[fila_intercambio],self.matriz[fila]
         print(f"\nF{fila + 1} <--> F{fila_intercambio + 1}\n")
         self.imprimir_matriz()
 
@@ -56,8 +55,8 @@ class GaussJordan():
         Parámetro: el índice de la columna para evaluar si contiene un pivote adecuado.
 
         Mediante un ciclo, se itera por cada valor de la columna evaluada de manera vertical.
-        Si un término es distinto que 0 y el índice de su fila no se encuentra en el set() de la clase, 
-        se agrega el índice al set(). La función luego retorna ese mismo índice y continúa con las operaciones.
+        Si un término es distinto que 0 y el índice de su fila no se encuentra en el set() de la clase,
+        la función retorna ese mismo índice y continúa con las operaciones.
         En caso de no cumplirse niguno de los criterios, se retorna un False.'''
 
         for fila in range(self.filas):
@@ -77,7 +76,7 @@ class GaussJordan():
         para transformarlo en 1. 
         
         Igualmente, hay otra condicional if que verifica si el índice de la fila con el pivote es distinta al índice de la primera
-        fila disponible sin pivote, lo cual da paso a un intercambio entre filas.'''
+        fila disponible sin pivote, lo cual da paso a un intercambio entre filas si es necesario. Por último, se actualiza el set()'''
 
         pivote_fila = self.pivote(col)
         if pivote_fila is False:
@@ -105,6 +104,11 @@ class GaussJordan():
     
     #Cuando hay columna pivote
     def reduccion_a_cero(self, col : int):
+        '''Parámetros: índice de la columna con pivote
+        Teniendo en cuenta que a este punto del programa, ya existe un 1 en la columna a trabajar, el pivote 1 
+        se busca mediante un for y se le asigna a la variable pivote_fila el índice de la fila donde se encuentra.
+        De este modo, se transforma el resto de números de la columna a 0 (exceptuando la fila pivote).'''
+
         pivote_fila = None
         for fila in self.filas_pivotes:
             if self.matriz[fila][col] == 1:
@@ -130,6 +134,16 @@ class GaussJordan():
     
     
     def soluciones(self):
+        '''Si la matriz tiene una fila con ceros menos en la columna de resultados, no hay solución.
+        Si en la matriz hay menos filas no nulas (es decir, con coeficientes) que columnas de incógnitas,
+        existen infinitas soluciones.
+        Si ninguno de estos casos se cumplen, se asume que la matriz presenta una solución única y los
+        resultados de las incógnitas se muestran en pantalla.'''
+
+        print("\n\nSOLUCIÓN EN FORMA DE ECUACIONES:\n")
+        self.imprimir_ecuaciones()
+        print()
+
         for fila in range(self.filas):
             if any(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
                 print("\nLa matriz no tiene solución.")
@@ -149,38 +163,68 @@ class GaussJordan():
         for i, sol in enumerate(soluciones):
             print(f"X{i+1} = {int(sol) if sol.is_integer() else f'{sol:.1f}'}")
 
+
     def variables_libres(self):
+        '''Se ejecuta cuando la matriz tiene infinitas soluciones.
+        En una lista se almacenan las columnas con pivotes (1). Si la lista no contiene el índice
+        de una columna, se considera que esa columna tiene una variable libre.'''
+
         columnas_pivotes = []
         for fila in range(self.filas):
             for col in range(self.columnas - 1):
-                if self.matriz[fila][col] == 1 and all(self.matriz[fila][i] == 0 for i in range(col)):
-                    columnas_pivotes.append(col)
-                    break
+                if self.matriz[fila][col] !=1: continue
+                if any(self.matriz[fila][i] != 0 for i in range(col)): continue
+                columnas_pivotes.append(col)
+                break
         
-        variables_libres = [i for i in range(self.columnas - 1) if i not in columnas_pivotes]
-
         for col in range(self.columnas - 1):
-            if col in columnas_pivotes:
-                for fila in range(self.filas):
-                    if self.matriz[fila][col] == 1:
-                        resultado = self.matriz[fila][-1]
-                        expr = f"X{col+1} = " + ((f"{int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}") 
-                                                  if resultado != 0 else "")
-                        for i, valor in enumerate(self.matriz[fila][:-1]):
-                            if i in variables_libres and valor != 0:
-                                if valor > 0:
-                                    operador = " -"
-                                else:
-                                    operador = " +"
-                                    valor = -valor
-                                expr += f"{operador} ({int(valor) if valor.is_integer() else f'{valor:.1f}'})X{i+1}"
-                        print(expr)
-            elif col in variables_libres:
-                print(f"X{col + 1} es una variable libre")
-        
+            if col not in columnas_pivotes:
+                print(f'X{col+1} es una variable libre')
+                continue
+            for fila in range(self.filas):
+                if self.matriz[fila][col] != 1: 
+                    continue
+                resultado = self.matriz[fila][-1]
+                expr = f"X{col+1} = " + ((f"{int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}") 
+                                          if resultado != 0 else "")
+                for i, valor in enumerate(self.matriz[fila][:-1]):
+                    if i in columnas_pivotes: continue
+                    if valor == 0: continue
+                    operador, valor = (" -",valor) if valor > 0 else(" +",-valor)
+                    expr += f"{operador} {("(" + str(int(valor)) + ")" if valor.is_integer() else f'{valor:.1f}') if valor != 1 else ""}X{i+1}"
+                print(expr)
+
 
     def imprimir_matriz(self):
         for fila in self.matriz:
             for valor in fila:
                 print(f"{int(valor) if valor.is_integer() else f'{valor:.1f}'}", end = " ")
             print()
+    
+
+    def imprimir_ecuaciones(self):
+        for fila in range(self.filas):
+            ecuacion = ""
+            for col in range(self.columnas - 1):
+                valor = self.matriz[fila][col]
+                if valor == 0: continue
+                if valor > 0 and ecuacion != "":
+                    operador = "+"
+                elif valor < 0:
+                    operador = "-"
+                    valor = -valor
+                else: operador = ""
+                coef = f"{("(" + str(int(valor)) + ")" if valor.is_integer() else f'{valor:.1f}') if valor != 1 else ""}"
+                if operador:
+                    ecuacion += f" {operador} {coef}X{col + 1}"
+                else:
+                    ecuacion += f"{coef}X{col + 1}"
+
+            resultado = self.matriz[fila][-1]
+            if resultado == 0 and all(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)):
+                ecuacion = "0 = 0"
+                print(ecuacion)
+                continue
+            
+            ecuacion += f" = {int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}"
+            print(ecuacion)
