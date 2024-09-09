@@ -1,9 +1,9 @@
 class GaussJordan():
     def __init__(self, matriz: list[list]) -> None:
         self.matriz = matriz
-        self.filas = len(matriz)
-        self.columnas = len(matriz[0])
-        self.filas_pivotes = set()
+        self.filas = len(matriz) #Cantidad de filas
+        self.columnas = len(matriz[0]) #Cantidad de columnas
+        self.filas_pivotes = set() #Para almacenar el índice de filas que contienen pivotes como valores únicos
     
     @staticmethod
     def crear_matriz(cantFilas: int, cantColum: int) -> list[list[float]]:
@@ -29,6 +29,11 @@ class GaussJordan():
         return matriz
     
     def gauss_jordan(self):
+        '''Se inicializa el proceso de eliminación Gauss Jordan.
+        Se recorren los índices de cada columnas menos la de resultados, es decir, de manera horizontal, para determinar un pivote.
+        En caso de que se encuentre una columna pivote, se procede a reducir los elementos de la 
+        columna correspondiente a 0, excepto el 1.'''
+
         for col in range(self.columnas - 1):
             if not self.convertir_a_1(col):
                 print(f"No se puede encontrar un pivote adecuado en la columna {col+1}.")
@@ -36,24 +41,44 @@ class GaussJordan():
             self.reduccion_a_cero(col)
                 
     def intercambio(self, fila, fila_intercambio) -> None:
+        '''Es una función que no devuelve nada.
+        Tiene como parámetros el índice de la fila sin pivote y el índice de la fila con pivote para intercambiarlas.'''
+
         temp = self.matriz[fila]
         self.matriz[fila] = self.matriz[fila_intercambio]
         self.matriz[fila_intercambio] = temp
         print(f"\nF{fila + 1} <--> F{fila_intercambio + 1}\n")
         self.imprimir_matriz()
 
-        self.filas_pivotes.remove(fila)
-        self.filas_pivotes.add(fila_intercambio)
     
     def pivote(self, col : int) -> int | bool:
+        '''Es una función que devuelve un entero (int) o False.
+        Parámetro: el índice de la columna para evaluar si contiene un pivote adecuado.
+
+        Mediante un ciclo, se itera por cada valor de la columna evaluada de manera vertical.
+        Si un término es distinto que 0 y el índice de su fila no se encuentra en el set() de la clase, 
+        se agrega el índice al set(). La función luego retorna ese mismo índice y continúa con las operaciones.
+        En caso de no cumplirse niguno de los criterios, se retorna un False.'''
+
         for fila in range(self.filas):
             if self.matriz[fila][col] != 0 and fila not in self.filas_pivotes:
-                self.filas_pivotes.add(fila)
                 return fila
         return False
 
 
     def convertir_a_1(self, col : int) -> bool:
+        '''Es una función que devuelve True o False.
+        Parámetro: el índice de la columna para evaluar si contiene un pivote adecuado.
+        
+        Primero, se revisa si en la columna hay presente un pivote. En caso de que no, se retorna un False y termina el proceso.
+        
+        En el caso contrario, con el índice dado de la fila en la que se encuentra el pivote, se obtiene el número pivote en la
+        columna en la que se está trabajando. Si el pivote es diferente que 1, la fila que lo contiene se divide con el pivote
+        para transformarlo en 1. 
+        
+        Igualmente, hay otra condicional if que verifica si el índice de la fila con el pivote es distinta al índice de la primera
+        fila disponible sin pivote, lo cual da paso a un intercambio entre filas.'''
+
         pivote_fila = self.pivote(col)
         if pivote_fila is False:
             return False
@@ -65,9 +90,16 @@ class GaussJordan():
             print(f"\nF{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.1f}'}\n")
             self.imprimir_matriz()
 
-        if pivote_fila != col and pivote_fila not in self.filas_pivotes:
-            self.intercambio(col, pivote_fila)
+        for fila in range(self.filas):
+            if fila not in self.filas_pivotes:
+                fila_sin_pivote = fila
+                break
+        
+        if pivote_fila != fila_sin_pivote:
+            self.intercambio(fila_sin_pivote, pivote_fila)
+            pivote_fila = fila_sin_pivote
 
+        self.filas_pivotes.add(pivote_fila)
         return True
 
     
@@ -83,14 +115,15 @@ class GaussJordan():
             if fila == pivote_fila: continue
             if self.matriz[fila][col] == 0: continue
             operando = self.matriz[fila][col] * -1
-            operando_tipo = int(operando) if operando.is_integer() else f"{operando:.1f}"
             self.matriz[fila] = [self.matriz[fila][i] + (operando * self.matriz[pivote_fila][i]) for i in range(self.columnas)]
 
             if operando > 0:
                 operador = "+"
             else:
                 operador = "-"
-                operando_tipo = -operando_tipo
+                operando = -operando
+            
+            operando_tipo = int(operando) if operando.is_integer() else f"{operando:.1f}"
             
             print(f"\nF{fila + 1} -> F{fila + 1} {operador} {operando_tipo}F{pivote_fila + 1}\n")
             self.imprimir_matriz()
@@ -98,7 +131,7 @@ class GaussJordan():
     
     def soluciones(self):
         for fila in range(self.filas):
-            if all(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
+            if any(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
                 print("\nLa matriz no tiene solución.")
                 return
             
