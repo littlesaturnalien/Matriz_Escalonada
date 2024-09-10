@@ -145,7 +145,7 @@ class GaussJordan():
         print()
 
         for fila in range(self.filas):
-            if any(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
+            if all(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
                 print("\nLa matriz no tiene solución.")
                 return
             
@@ -219,6 +219,7 @@ class GaussJordan():
                 continue
             
             ecuacion += f" = {int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}"
+
             print(ecuacion)
     
     def __str__(self) -> str:
