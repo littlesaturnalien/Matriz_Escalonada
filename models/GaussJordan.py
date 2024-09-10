@@ -194,18 +194,6 @@ class GaussJordan():
                     expr += f"{operador} {("(" + str(int(valor)) + ")" if valor.is_integer() else f'{valor:.1f}') if valor != 1 else ""}X{i+1}"
                 print(expr)
 
-
-    def __str__(self) -> str:
-        matriz : str = ''
-        maximo_tamaño_fila = max(len(f'{round(self.matriz[fila][columna], 3)}') for fila in range(self.filas) for columna in range(self.columnas)) + 2
-        for fila in range(self.filas):
-            fila_str = ''
-            for columna in range(self.columnas):
-                fila_str += f'{round(self.matriz[fila][columna], 3):<{maximo_tamaño_fila}}'
-            matriz += fila_str + '\n'
-        return matriz
-    
-
     def imprimir_ecuaciones(self):
         for fila in range(self.filas):
             ecuacion = ""
@@ -231,4 +219,15 @@ class GaussJordan():
                 continue
             
             ecuacion += f" = {int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}"
+
             print(ecuacion)
+    
+    def __str__(self) -> str:
+        matriz : str = ''
+        maximo_tamaño_fila = max(len(f'{round(self.matriz[fila][columna], 3)}') for fila in range(self.filas) for columna in range(self.columnas)) + 2
+        for fila in range(self.filas):
+            fila_str = ''
+            for columna in range(self.columnas):
+                fila_str += f'{round(self.matriz[fila][columna], 3):<{maximo_tamaño_fila}}'
+            matriz += fila_str + '\n'
+        return matriz
