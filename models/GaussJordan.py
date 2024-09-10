@@ -47,7 +47,7 @@ class GaussJordan():
 
         self.matriz[fila],self.matriz[fila_intercambio] = self.matriz[fila_intercambio],self.matriz[fila]
         print(f"\nF{fila + 1} <--> F{fila_intercambio + 1}\n")
-        self.imprimir_matriz()
+        print(self)
 
     
     def pivote(self, col : int) -> int | bool:
@@ -87,7 +87,7 @@ class GaussJordan():
         if pivote != 1:
             self.matriz[pivote_fila] = [x / pivote for x in self.matriz[pivote_fila]]
             print(f"\nF{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.1f}'}\n")
-            self.imprimir_matriz()
+            print(self)
 
         for fila in range(self.filas):
             if fila not in self.filas_pivotes:
@@ -130,7 +130,7 @@ class GaussJordan():
             operando_tipo = int(operando) if operando.is_integer() else f"{operando:.1f}"
             
             print(f"\nF{fila + 1} -> F{fila + 1} {operador} {operando_tipo}F{pivote_fila + 1}\n")
-            self.imprimir_matriz()
+            print(self)
     
     
     def soluciones(self):
@@ -195,11 +195,15 @@ class GaussJordan():
                 print(expr)
 
 
-    def imprimir_matriz(self):
-        for fila in self.matriz:
-            for valor in fila:
-                print(f"{int(valor) if valor.is_integer() else f'{valor:.1f}'}", end = " ")
-            print()
+    def __str__(self) -> str:
+        matriz : str = ''
+        maximo_tamaño_fila = max(len(f'{round(self.matriz[fila][columna], 3)}') for fila in range(self.filas) for columna in range(self.columnas)) + 2
+        for fila in range(self.filas):
+            fila_str = ''
+            for columna in range(self.columnas):
+                fila_str += f'{round(self.matriz[fila][columna], 3):<{maximo_tamaño_fila}}'
+            matriz += fila_str + '\n'
+        return matriz
     
 
     def imprimir_ecuaciones(self):

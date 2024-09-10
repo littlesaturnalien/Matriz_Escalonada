@@ -1,4 +1,4 @@
-from GaussJordan import GaussJordan as GJ
+from models.GaussJordan import GaussJordan as GJ
 
 def main():
     filas = int(input("Ingresa la cantidad de filas de la matriz: "))
