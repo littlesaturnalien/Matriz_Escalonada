@@ -145,7 +145,7 @@ class GaussJordan():
         print()
 
         for fila in range(self.filas):
-            if any(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
+            if all(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
                 print("\nLa matriz no tiene solución.")
                 return
             
