@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>main_widget</class>
+ <widget class="QWidget" name="main_widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="main_widget_vertical_layout" stretch="1,10">
+   <item>
+    <widget class="QWidget" name="options_tab_widget" native="true">
+     <layout class="QHBoxLayout" name="options_tab_horizontal_layout">
+      <item alignment="Qt::AlignmentFlag::AlignLeft">
+       <widget class="QPushButton" name="back_tab_button">
+        <property name="text">
+         <string>Anterior</string>
+        </property>
+       </widget>
+      </item>
+      <item alignment="Qt::AlignmentFlag::AlignHCenter">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Procedimiento</string>
+        </property>
+       </widget>
+      </item>
+      <item alignment="Qt::AlignmentFlag::AlignRight">
+       <widget class="QPushButton" name="next_tab_button">
+        <property name="text">
+         <string>Siguiente</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="p1">
+      <attribute name="title">
+       <string>p1</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="p_horizontal_layout_1">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTableWidget" name="tableWidget">
+         <row>
+          <property name="text">
+           <string>Nueva fila</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Nueva fila</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Nueva fila</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Nueva columna</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Nueva columna</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Nueva columna</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

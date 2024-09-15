@@ -1,3 +1,35 @@
+from views.ui_main_window import Ui_MainWindow
+from models.GaussJordan import GaussJordan
+from controller.controller import MatrixController
+from PySide6.QtWidgets import QMainWindow,QApplication
+from sys import argv,exit
+
+class MainWindow(QMainWindow,Ui_MainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+if __name__ == '__main__':
+    app = QApplication(argv)
+    view = MainWindow()
+    view.show()
+    model = GaussJordan([[1,2,3,4],[5,6,7,8]])
+    MatrixController(view,model)
+    exit(app.exec())
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 from models.GaussJordan import GaussJordan as GJ
 
 def main():
@@ -20,3 +52,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    '''
