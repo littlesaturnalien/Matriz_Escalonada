@@ -1,10 +1,13 @@
+import copy
+
 class GaussJordan():
-    def __init__(self, matriz: list[list]) -> None:
+    def __init__(self, matriz) -> None:
         self.matriz = matriz
+        self.filas_pivotes = set()#Para almacenar el índice de filas que contienen pivotes como valores únicos
         self.filas = len(matriz) #Cantidad de filas
         self.columnas = len(matriz[0]) #Cantidad de columnas
-        self.filas_pivotes = set() #Para almacenar el índice de filas que contienen pivotes como valores únicos
-    
+        self.config = {}
+
     @staticmethod
     def crear_matriz(cantFilas: int, cantColum: int) -> list[list[float]]:
         matriz = []
@@ -39,6 +42,9 @@ class GaussJordan():
                 print(f"\nNo se puede encontrar un pivote adecuado en la columna {col+1}.")
                 continue
             self.reduccion_a_cero(col)
+        self.soluciones()
+
+        return self.config
                 
 
     def intercambio(self, fila, fila_intercambio) -> None:
@@ -46,9 +52,7 @@ class GaussJordan():
         Tiene como parámetros el índice de la fila sin pivote y el índice de la fila con pivote para intercambiarlas.'''
 
         self.matriz[fila],self.matriz[fila_intercambio] = self.matriz[fila_intercambio],self.matriz[fila]
-        print(f"\nF{fila + 1} <--> F{fila_intercambio + 1}\n")
-        print(self)
-
+        self.config[f'F{fila + 1} <--> F{fila_intercambio + 1}'] = copy.deepcopy(self.matriz)
     
     def pivote(self, col : int) -> int | bool:
         '''Es una función que devuelve un entero (int) o False.
@@ -86,8 +90,7 @@ class GaussJordan():
     
         if pivote != 1:
             self.matriz[pivote_fila] = [x / pivote for x in self.matriz[pivote_fila]]
-            print(f"\nF{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.1f}'}\n")
-            print(self)
+            self.config[f"F{pivote_fila + 1} -> F{pivote_fila + 1} / {int(pivote) if pivote.is_integer() else f'{pivote:.5f}'}"] = copy.deepcopy(self.matriz)
 
         for fila in range(self.filas):
             if fila not in self.filas_pivotes:
@@ -127,10 +130,9 @@ class GaussJordan():
                 operador = "-"
                 operando = -operando
             
-            operando_tipo = int(operando) if operando.is_integer() else f"{operando:.1f}"
+            operando_tipo = int(operando) if operando.is_integer() else f"{operando:.5f}"
             
-            print(f"\nF{fila + 1} -> F{fila + 1} {operador} {operando_tipo}F{pivote_fila + 1}\n")
-            print(self)
+            self.config[f"F{fila + 1} -> F{fila + 1} {operador} {operando_tipo}F{pivote_fila + 1}"] = copy.deepcopy(self.matriz)
     
     
     def soluciones(self):
@@ -146,29 +148,29 @@ class GaussJordan():
 
         for fila in range(self.filas):
             if all(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:
-                print("\nLa matriz no tiene solución.")
+                self.config['La matriz no tiene solucion'] = (copy.deepcopy(self.matriz),'')
                 return
             
-            filas_no_nulas = [fila for fila in self.matriz if any(f != 0 for f in fila[:-1])]
-            if len(filas_no_nulas) < self.columnas - 1:
-                print("\nLa matriz tiene infinitas soluciones.\n")
-                self.variables_libres()
-                return
+        filas_no_nulas = [fila for fila in self.matriz if any(f != 0 for f in fila[:-1])]
+        if len(filas_no_nulas) < self.columnas - 1:
+            self.config['La matriz tiene infinitas soluciones'] = (copy.deepcopy(self.matriz),self.variables_libres())
+            self.variables_libres()
+            return
 
-        print("\nLa matriz tiene una solución única:\n")
         soluciones = []
         for fila in range(self.filas):
             if fila < self.columnas - 1:
                 soluciones.append(self.matriz[fila][-1])
         for i, sol in enumerate(soluciones):
-            print(f"X{i+1} = {int(sol) if sol.is_integer() else f'{sol:.1f}'}")
+            soluciones[i] = f"X{i+1} = {int(sol) if sol.is_integer() else f'{sol:.5f}'}"
+        self.config['La matriz tiene una solucion única'] = (copy.deepcopy(self.matriz),soluciones)
 
 
     def variables_libres(self):
         '''Se ejecuta cuando la matriz tiene infinitas soluciones.
         En una lista se almacenan las columnas con pivotes (1). Si la lista no contiene el índice
         de una columna, se considera que esa columna tiene una variable libre.'''
-
+        variables = []
         columnas_pivotes = []
         for fila in range(self.filas):
             for col in range(self.columnas - 1):
@@ -179,7 +181,7 @@ class GaussJordan():
         
         for col in range(self.columnas - 1):
             if col not in columnas_pivotes:
-                print(f'X{col+1} es una variable libre')
+                variables.append(f'X{col+1} es una variable libre')
                 continue
             for fila in range(self.filas):
                 if self.matriz[fila][col] != 1: 
@@ -192,7 +194,8 @@ class GaussJordan():
                     if valor == 0: continue
                     operador, valor = (" -",valor) if valor > 0 else(" +",-valor)
                     expr += f"{operador} {("(" + str(int(valor)) + ")" if valor.is_integer() else f'{valor:.1f}') if valor != 1 else ""}X{i+1}"
-                print(expr)
+                variables.append(expr)
+        return variables
 
     def imprimir_ecuaciones(self):
         for fila in range(self.filas):

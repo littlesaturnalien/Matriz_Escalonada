@@ -6,12 +6,92 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>284</width>
+    <height>302</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#Main_widget{
+background-color: #d3d3d3;
+
+}
+
+QPushButton{
+border: 2px solid #404040;
+border-radius: 8px;
+padding: 1px 5px;
+color: #fff;
+background-color: #6c757d;
+font: 700 9pt &quot;Calibri&quot;;
+}
+
+QPushButton:hover{
+background-color: #5c636a;
+}
+ QPushButton:pressed {
+    border: 4px solid #c0c4c8 
+}
+QLabel {
+    color: #fff;
+ background-color: #6a858d; 
+    border:2px solid #404040;        
+    border-radius: 4px;           
+    padding: 2.5px 5px;            
+font: 700 9pt &quot;Calibri&quot;;
+}
+
+QTableWidget{
+background-color: #819299; 
+gridline-color: #fff;  
+}
+
+QHeaderView{
+background-color: #85939a;
+color:white;
+font: 700 9pt &quot;Calibri&quot;;
+}
+
+QHeaderView::section {
+background-color: #85939a;
+}
+QTableCornerButton::section {
+background-color: #85939a;
+}
+QTableWidget::item::hover{
+background-color: #B6BEC2
+}
+
+QTabBar::tab{
+background-color: #80857C;
+color: white;
+}
+
+QTabBar::tab:hover{
+background-color: #B0B3AD
+}
+
+QTabBar::tab:selected{
+background-color:#454742
+}
+
+QListWidget{
+background: #F1F1F1;
+border : none
+}
+QListWidget::item{
+margin: 2px;
+margin-left:0;
+}
+QListWidget::item::hover{
+color : #1A5276 ;
+font: 700 9pt &quot;Segoe UI&quot;;
+border: 1.5px solid #2E4053;
+border-radius:7px
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="main_widget_vertical_layout" stretch="1,10">
    <item>
@@ -19,13 +99,24 @@
      <layout class="QHBoxLayout" name="options_tab_horizontal_layout">
       <item alignment="Qt::AlignmentFlag::AlignLeft">
        <widget class="QPushButton" name="back_tab_button">
+        <property name="styleSheet">
+         <string notr="true">image: url(:/icon/Images/arrow_left.png);
+width:40px;
+height:30px;
+padding:0
+</string>
+        </property>
         <property name="text">
-         <string>Anterior</string>
+         <string/>
         </property>
        </widget>
       </item>
       <item alignment="Qt::AlignmentFlag::AlignHCenter">
        <widget class="QLabel" name="label">
+        <property name="styleSheet">
+         <string notr="true">border-radius:6px;
+font: 700 9pt &quot;Calibri&quot;;</string>
+        </property>
         <property name="text">
          <string>Procedimiento</string>
         </property>
@@ -33,8 +124,15 @@
       </item>
       <item alignment="Qt::AlignmentFlag::AlignRight">
        <widget class="QPushButton" name="next_tab_button">
+        <property name="styleSheet">
+         <string notr="true">image: url(:/icon/Images/arrow_right.png);
+width:40px;
+height:30px;
+padding:0
+</string>
+        </property>
         <property name="text">
-         <string>Siguiente</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -50,7 +148,7 @@
       <attribute name="title">
        <string>p1</string>
       </attribute>
-      <layout class="QHBoxLayout" name="p_horizontal_layout_1">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -64,17 +162,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QTableWidget" name="tableWidget">
-         <row>
-          <property name="text">
-           <string>Nueva fila</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Nueva fila</string>
-          </property>
-         </row>
+        <widget class="QTableWidget" name="s_table">
          <row>
           <property name="text">
            <string>Nueva fila</string>
@@ -85,16 +173,23 @@
            <string>Nueva columna</string>
           </property>
          </column>
-         <column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="solution_list">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <item>
           <property name="text">
-           <string>Nueva columna</string>
+           <string>Nuevo elemento</string>
           </property>
-         </column>
-         <column>
+         </item>
+         <item>
           <property name="text">
-           <string>Nueva columna</string>
+           <string>Nuevo elemento</string>
           </property>
-         </column>
+         </item>
         </widget>
        </item>
       </layout>
@@ -103,6 +198,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="qrc_files/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -19,14 +19,123 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
     QHBoxLayout, QHeaderView, QLabel, QMainWindow,
     QPushButton, QSizePolicy, QSpinBox, QStatusBar,
     QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
+from views.QtFiles.qrc_files import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(523, 276)
+        MainWindow.resize(616, 317)
+        MainWindow.setStyleSheet(u"#MainWindow{\n"
+"background-color: #d3d3d3;\n"
+"\n"
+"}\n"
+"\n"
+"#MainWindow QPushButton{\n"
+"border: 2px solid #404040;\n"
+"border-radius: 8px;\n"
+"padding: 1px 5px;\n"
+"color: #fff;\n"
+"background-color: #6c757d;\n"
+"font: 700 9pt \"Calibri\";\n"
+"}\n"
+"\n"
+"#MainWindow QPushButton:hover{\n"
+"background-color: #5c636a;\n"
+"}\n"
+"#MainWindow QPushButton:pressed {\n"
+"    border: 4px solid #c0c4c8 \n"
+"}\n"
+"\n"
+"QSpinBox{\n"
+"color: white;\n"
+"background-color: #6c757d;\n"
+"}\n"
+"QSpinBox:up-button{\n"
+"image:url(:/icon/Images/arrow_upwards.png);\n"
+"border-left:0.5px solid #fff;\n"
+"subcontrol-position:right;\n"
+"width: 20px;\n"
+"height: 20px;\n"
+"}\n"
+"QSpinBox:down-button{\n"
+"image:url(:/icon/Images/arrow_downwards.png);\n"
+"border-right:0.5px solid #fff;\n"
+"subcontrol-position:left;\n"
+"width:20px;\n"
+"height:20px\n"
+"}\n"
+"QSpinBox:up-button:hover{\n"
+"background-color: #5c636f;\n"
+"}\n"
+"QSpinBox:down-button:hover{\n"
+"background-color: #5c636f;\n"
+"}\n"
+"QLabel {\n"
+"    color: #fff;\n"
+" background-c"
+                        "olor: #6a858d; \n"
+"    border:2px solid #404040;        \n"
+"    border-radius: 4px;           \n"
+"    padding: 2.5px 5px;            \n"
+"font: 700 9pt \"Calibri\";\n"
+"}\n"
+"QComboBox{\n"
+"font: 700 9pt \"Calibri\";\n"
+"color: white;\n"
+"background-color: #6c757d;\n"
+"border: 1.5px solid #404040;\n"
+"border-radius: 6px;\n"
+"padding-left:10px\n"
+"}\n"
+"QComboBox::drop-down{\n"
+"border:0px;\n"
+"}\n"
+"QComboBox::down-arrow{\n"
+"image: url(:/icon/Images/arrow_downwards.png);\n"
+"width:20px;\n"
+"height: 20px;\n"
+"margin-right: 13px;\n"
+"}\n"
+"\n"
+"\n"
+"QComboBox QListView{\n"
+"font: 700 9pt \"Calibri\";\n"
+"border: 1px solid rgba(0,0,0,10%);\n"
+"padding: 5px;\n"
+"background-color: #6c757d;\n"
+"color: white;\n"
+"outline: 0px;\n"
+"}\n"
+"QComboBox::hover{\n"
+"background-color: #5c636a;\n"
+"}\n"
+"\n"
+"QTableWidget{\n"
+"background-color: #819299; \n"
+"gridline-color: #fff;  \n"
+"}\n"
+"\n"
+"QHeaderView{\n"
+"background-color: #85939a;\n"
+"color:white;\n"
+"font: 700 9pt \"Calibri\";\n"
+"}\n"
+"\n"
+"QHeaderView::section "
+                        "{\n"
+"background-color: #85939a;\n"
+"}\n"
+"QTableCornerButton::section {\n"
+"background-color: #85939a;\n"
+"}\n"
+"QTableWidget::item::hover{\n"
+"background-color: #B6BEC2\n"
+"}\n"
+"")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
+        self.centralwidget.setStyleSheet(u"")
         self.centralwidget_layout = QVBoxLayout(self.centralwidget)
         self.centralwidget_layout.setObjectName(u"centralwidget_layout")
         self.table_widget = QWidget(self.centralwidget)
@@ -43,38 +152,39 @@ class Ui_MainWindow(object):
         self.table_row_spinbox_widget = QWidget(self.table_buttons_frame)
         self.table_row_spinbox_widget.setObjectName(u"table_row_spinbox_widget")
         self.table_row_spinbox_widget.setStyleSheet(u"")
-        self.row_spinbox_vertical_layout = QVBoxLayout(self.table_row_spinbox_widget)
-        self.row_spinbox_vertical_layout.setObjectName(u"row_spinbox_vertical_layout")
-        self.row_spinbox_vertical_layout.setContentsMargins(9, 9, 9, 9)
-        self.label = QLabel(self.table_row_spinbox_widget)
-        self.label.setObjectName(u"label")
-        self.label.setStyleSheet(u"border: 0")
+        self.verticalLayout_3 = QVBoxLayout(self.table_row_spinbox_widget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(9, 9, 9, 9)
+        self.row_spinbox_label = QLabel(self.table_row_spinbox_widget)
+        self.row_spinbox_label.setObjectName(u"row_spinbox_label")
 
-        self.row_spinbox_vertical_layout.addWidget(self.label, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout_3.addWidget(self.row_spinbox_label, 0, Qt.AlignmentFlag.AlignHCenter)
 
         self.row_spinbox = QSpinBox(self.table_row_spinbox_widget)
         self.row_spinbox.setObjectName(u"row_spinbox")
         self.row_spinbox.setStyleSheet(u"border-color: rgb(0, 0, 0);")
+        self.row_spinbox.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.row_spinbox_vertical_layout.addWidget(self.row_spinbox)
+        self.verticalLayout_3.addWidget(self.row_spinbox)
 
 
         self.table_buttons_horizontal_layout.addWidget(self.table_row_spinbox_widget)
 
         self.table_column_spinbox_widget = QWidget(self.table_buttons_frame)
         self.table_column_spinbox_widget.setObjectName(u"table_column_spinbox_widget")
-        self.column_spinbox_vertical_layout = QVBoxLayout(self.table_column_spinbox_widget)
-        self.column_spinbox_vertical_layout.setObjectName(u"column_spinbox_vertical_layout")
-        self.column_spinbox_vertical_layout.setContentsMargins(9, 9, 9, 9)
+        self.verticalLayout = QVBoxLayout(self.table_column_spinbox_widget)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(9, 9, 9, 9)
         self.column_spinbox_label = QLabel(self.table_column_spinbox_widget)
         self.column_spinbox_label.setObjectName(u"column_spinbox_label")
 
-        self.column_spinbox_vertical_layout.addWidget(self.column_spinbox_label, 0, Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignVCenter)
+        self.verticalLayout.addWidget(self.column_spinbox_label, 0, Qt.AlignmentFlag.AlignHCenter)
 
         self.column_spinbox = QSpinBox(self.table_column_spinbox_widget)
         self.column_spinbox.setObjectName(u"column_spinbox")
+        self.column_spinbox.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.column_spinbox_vertical_layout.addWidget(self.column_spinbox, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout.addWidget(self.column_spinbox)
 
 
         self.table_buttons_horizontal_layout.addWidget(self.table_column_spinbox_widget)
@@ -85,118 +195,49 @@ class Ui_MainWindow(object):
         self.table_grid_options.setContentsMargins(9, 9, 9, 9)
         self.table_fill_0_button = QPushButton(self.table_buttons_frame)
         self.table_fill_0_button.setObjectName(u"table_fill_0_button")
-        self.table_fill_0_button.setStyleSheet(u"QPushButton{\n"
-"border: 2px solid gray;\n"
-"border-radius: 5px\n"
-"}\n"
-"QPushButton::hover{\n"
-"background-color: #eee;\n"
-"}\n"
-"QPushButton::pressed{\n"
-"background-color: #aaa\n"
-"}")
+        self.table_fill_0_button.setStyleSheet(u"")
 
         self.table_grid_options.addWidget(self.table_fill_0_button, 0, 1, 1, 1)
 
         self.table_clean_matrix_button = QPushButton(self.table_buttons_frame)
         self.table_clean_matrix_button.setObjectName(u"table_clean_matrix_button")
-        self.table_clean_matrix_button.setStyleSheet(u"QPushButton{\n"
-"border: 2px solid gray;\n"
-"border-radius: 5px\n"
-"}\n"
-"QPushButton::hover{\n"
-"background-color: #eee;\n"
-"}\n"
-"QPushButton::pressed{\n"
-"background-color: #aaa;\n"
-"}")
+        self.table_clean_matrix_button.setStyleSheet(u"")
 
         self.table_grid_options.addWidget(self.table_clean_matrix_button, 1, 0, 1, 1)
-
-        self.table_random_matrix_button = QPushButton(self.table_buttons_frame)
-        self.table_random_matrix_button.setObjectName(u"table_random_matrix_button")
-        self.table_random_matrix_button.setStyleSheet(u"QPushButton{\n"
-"border: 2px solid gray;\n"
-"border-radius: 5px\n"
-"}\n"
-"QPushButton::hover{\n"
-"background-color: #eee;\n"
-"}\n"
-"QPushButton::pressed{\n"
-"background-color: #aaa\n"
-"}")
-
-        self.table_grid_options.addWidget(self.table_random_matrix_button, 0, 2, 1, 1)
 
         self.table_update_button = QPushButton(self.table_buttons_frame)
         self.table_update_button.setObjectName(u"table_update_button")
         self.table_update_button.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.table_update_button.setStyleSheet(u"QPushButton{\n"
-"border: 2px solid gray;\n"
-"border-radius: 5px\n"
-"}\n"
-"QPushButton::hover{\n"
-"background-color: #eee;\n"
-"}\n"
-"QPushButton::pressed{\n"
-"background-color: #aaa\n"
-"}")
+        self.table_update_button.setStyleSheet(u"")
 
         self.table_grid_options.addWidget(self.table_update_button, 0, 0, 1, 1)
-
-        self.table_export_matrix_button = QPushButton(self.table_buttons_frame)
-        self.table_export_matrix_button.setObjectName(u"table_export_matrix_button")
-        self.table_export_matrix_button.setStyleSheet(u"QPushButton{\n"
-"border: 2px solid gray;\n"
-"border-radius: 5px\n"
-"}\n"
-"QPushButton::hover{\n"
-"background-color: #eee;\n"
-"}\n"
-"QPushButton::pressed{\n"
-"background-color: #aaa\n"
-"}")
-
-        self.table_grid_options.addWidget(self.table_export_matrix_button, 2, 0, 1, 1)
 
         self.table_solution_matrix_combobox = QComboBox(self.table_buttons_frame)
         self.table_solution_matrix_combobox.addItem("")
         self.table_solution_matrix_combobox.addItem("")
         self.table_solution_matrix_combobox.setObjectName(u"table_solution_matrix_combobox")
-        self.table_solution_matrix_combobox.setStyleSheet(u"QPushButton{\n"
-"border: 2px solid black;\n"
-"border-radius: 5px\n"
-"}\n"
-"QPushButton::hover{\n"
-"background-color: #eee;\n"
-"}\n"
-"QPushButton::pressed{\n"
-"background-color: #aaa\n"
-"}")
+        self.table_solution_matrix_combobox.setStyleSheet(u"")
 
-        self.table_grid_options.addWidget(self.table_solution_matrix_combobox, 1, 1, 1, 2)
+        self.table_grid_options.addWidget(self.table_solution_matrix_combobox, 1, 1, 1, 1)
+
+        self.table_random_matrix_button = QPushButton(self.table_buttons_frame)
+        self.table_random_matrix_button.setObjectName(u"table_random_matrix_button")
+        self.table_random_matrix_button.setStyleSheet(u"")
+
+        self.table_grid_options.addWidget(self.table_random_matrix_button, 0, 2, 1, 1)
 
         self.table_solve_matrix_button = QPushButton(self.table_buttons_frame)
         self.table_solve_matrix_button.setObjectName(u"table_solve_matrix_button")
-        self.table_solve_matrix_button.setStyleSheet(u"QPushButton{\n"
-"border: 2px solid gray;\n"
-"border-radius: 5px;\n"
-"}\n"
-"QPushButton::hover{\n"
-"background-color: #eee;\n"
-"}\n"
-"QPushButton::pressed{\n"
-"background-color: #aaa\n"
-"}")
+        self.table_solve_matrix_button.setStyleSheet(u"")
 
-        self.table_grid_options.addWidget(self.table_solve_matrix_button, 2, 1, 1, 2)
+        self.table_grid_options.addWidget(self.table_solve_matrix_button, 1, 2, 1, 1)
 
 
         self.table_buttons_horizontal_layout.addLayout(self.table_grid_options)
 
-        self.table_buttons_horizontal_layout.setStretch(0, 5)
-        self.table_buttons_horizontal_layout.setStretch(1, 5)
-        self.table_buttons_horizontal_layout.setStretch(2, 100)
+        self.table_buttons_horizontal_layout.setStretch(0, 15)
+        self.table_buttons_horizontal_layout.setStretch(1, 15)
+        self.table_buttons_horizontal_layout.setStretch(2, 80)
 
         self.verticalLayout_2.addWidget(self.table_buttons_frame)
 
@@ -211,13 +252,17 @@ class Ui_MainWindow(object):
         self.input_table.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         if (self.input_table.rowCount() < 3):
             self.input_table.setRowCount(3)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        __qtablewidgetitem3.setFlags(Qt.ItemIsSelectable|Qt.ItemIsEditable|Qt.ItemIsEnabled);
+        self.input_table.setItem(0, 0, __qtablewidgetitem3)
         self.input_table.setObjectName(u"input_table")
+        self.input_table.setStyleSheet(u"")
         self.input_table.verticalHeader().setVisible(True)
 
         self.verticalLayout_2.addWidget(self.input_table)
 
         self.verticalLayout_2.setStretch(0, 1)
-        self.verticalLayout_2.setStretch(1, 10)
+        self.verticalLayout_2.setStretch(1, 100)
 
         self.centralwidget_layout.addWidget(self.table_widget)
 
@@ -233,16 +278,15 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Calculadora de matrices", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Filas", None))
+        self.row_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Filas", None))
         self.column_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Columnas", None))
         self.table_fill_0_button.setText(QCoreApplication.translate("MainWindow", u"Rellenar espacios con 0", None))
         self.table_clean_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Limpiar Matriz", None))
-        self.table_random_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Matriz aleatoria", None))
         self.table_update_button.setText(QCoreApplication.translate("MainWindow", u"Actualizar", None))
-        self.table_export_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Exportar Matriz", None))
         self.table_solution_matrix_combobox.setItemText(0, QCoreApplication.translate("MainWindow", u"Resolver por", None))
         self.table_solution_matrix_combobox.setItemText(1, QCoreApplication.translate("MainWindow", u"Reducci\u00f3n", None))
 
+        self.table_random_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Matriz aleatoria", None))
         self.table_solve_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Resolver", None))
         ___qtablewidgetitem = self.input_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"X1", None));
@@ -250,5 +294,10 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"X2", None));
         ___qtablewidgetitem2 = self.input_table.horizontalHeaderItem(2)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"b", None));
+
+        __sortingEnabled = self.input_table.isSortingEnabled()
+        self.input_table.setSortingEnabled(False)
+        self.input_table.setSortingEnabled(__sortingEnabled)
+
     # retranslateUi
 
