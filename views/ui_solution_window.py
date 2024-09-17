@@ -8,15 +8,8 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QHeaderView, QLabel,
-    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+from PySide6.QtCore import (QCoreApplication,QMetaObject, Qt)
+from PySide6.QtWidgets import (QHBoxLayout, QLabel,QListWidget, QPushButton,
     QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
     QWidget)
 from views.QtFiles.qrc_files import resources_rc
@@ -25,7 +18,7 @@ class Ui_main_widget(object):
     def setupUi(self, main_widget:QWidget):
         if not main_widget.objectName():
             main_widget.setObjectName(u"main_widget")
-        main_widget.resize(284, 302)
+        main_widget.resize(600, 450)
         main_widget.setStyleSheet(u"#Main_widget{\n"
 "background-color: #d3d3d3;\n"
 "\n"
@@ -155,7 +148,6 @@ class Ui_main_widget(object):
     # setupUi
     def create_tab_solutions(self,config: dict):
         for i,(step,matrix) in enumerate(config.items()):
-            print(matrix[0])
             self.p = QWidget()
             self.p.setProperty('step_data',step)
             self.p.setObjectName(f'p{i+1}')
@@ -177,6 +169,7 @@ class Ui_main_widget(object):
                     self.solution_list.hide()
             else:
                 self.create_matriz(config[step],self.s_table)
+            self.s_table.resizeColumnsToContents()
             self.tabWidget.addTab(self.p,f'p{i+1}')
 
     def create_matriz(self,matriz,table_widget:QTableWidget):

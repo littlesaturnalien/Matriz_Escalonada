@@ -39,7 +39,7 @@ class GaussJordan():
 
         for col in range(self.columnas - 1):
             if not self.convertir_a_1(col):
-                print(f"\nNo se puede encontrar un pivote adecuado en la columna {col+1}.")
+                #print(f"\nNo se puede encontrar un pivote adecuado en la columna {col+1}.")
                 continue
             self.reduccion_a_cero(col)
         self.soluciones()
@@ -142,9 +142,9 @@ class GaussJordan():
         Si ninguno de estos casos se cumplen, se asume que la matriz presenta una solución única y los
         resultados de las incógnitas se muestran en pantalla.'''
 
-        print("\n\nSOLUCIÓN EN FORMA DE ECUACIONES:\n")
+        '''print("\n\nSOLUCIÓN EN FORMA DE ECUACIONES:\n")
         self.imprimir_ecuaciones()
-        print()
+        print()'''
 
         for fila in range(self.filas):
             if all(self.matriz[fila][i] == 0 for i in range(self.columnas - 1)) and self.matriz[fila][-1] != 0:

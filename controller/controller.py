@@ -1,4 +1,4 @@
-from views.message_box import warning_box,information_box
+from views.message_box import warning_box
 from views.ui_main_window import Ui_MainWindow
 from views.ui_solution_window import Ui_main_widget as Ui_solution
 from models.GaussJordan import GaussJordan
@@ -26,8 +26,6 @@ class MatrixController():
         if rows <=1 or columns <=1:
             warning_box('No es posible redimensionar esta matriz.')
             return
-        self.__view.column_spinbox.setValue(0)
-        self.__view.row_spinbox.setValue(0)
         self.__view.input_table.setRowCount(rows)
         self.__view.input_table.setColumnCount(columns)
         for row in range(rows):
@@ -135,9 +133,39 @@ class MatrixController():
         self.solution_window = Ui_solution()
         self.window = QWidget()
         self.solution_window.setupUi(self.window)
+        self.window.setWindowTitle(u'Solución detallada')
         self.solution_window.create_tab_solutions(matrix.gauss_jordan())
+        self.connect_solution_window()
         self.window.show()
-                
+    @Slot()
+
+    def connect_solution_window(self):
+        self.solution_window.tabWidget.currentChanged.connect(self.show_step_property)
+        self.solution_window.next_tab_button.clicked.connect(self.next_tab)
+        self.solution_window.back_tab_button.clicked.connect(self.previous_tab)
+    def show_step_property(self,index):
+        step = self.solution_window.tabWidget.currentWidget().property('step_data')
+        if step is not None:
+            self.solution_window.label.setText(step)
+            return
+        self.solution_window.label.setText('Informacion no encontrada')
+
+    @Slot()
+    def destroy_solution_window(self):
+        self.solution_window = None
+        self.window = None
+
+    @Slot()
+    def previous_tab(self):
+        current_index = self.solution_window.tabWidget.currentIndex()
+        if current_index > 0:
+            self.solution_window.tabWidget.setCurrentIndex(current_index-1)
+    @Slot()
+    def next_tab(self):
+        current_index = self.solution_window.tabWidget.currentIndex()
+        if current_index < self.solution_window.tabWidget.count()-1:
+            self.solution_window.tabWidget.setCurrentIndex(current_index+1)
+
 
 
 
