@@ -233,3 +233,8 @@ class GaussJordan():
                 fila_str += f'{round(self.matriz[fila][columna], 3):<{maximo_tamaño_fila}}'
             matriz += fila_str + '\n'
         return matriz
+    
+    @staticmethod
+    def get_scalar(row_vector,column_vector):
+        scalar = sum([row * column for row,column in zip(row_vector,column_vector)])
+        return scalar

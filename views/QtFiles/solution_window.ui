@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Solución</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qrc_files/resources.qrc">
+    <normaloff>:/icon/Images/grid.ico</normaloff>:/icon/Images/grid.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#Main_widget{

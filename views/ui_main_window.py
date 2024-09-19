@@ -8,18 +8,29 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject,Qt)
-from PySide6.QtWidgets import (QComboBox, QFrame, QGridLayout,
-    QHBoxLayout, QLabel,
-    QPushButton, QSpinBox, QStatusBar,
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+    QHBoxLayout, QHeaderView, QLabel, QMainWindow,
+    QPushButton, QSizePolicy, QSpinBox, QStatusBar,
     QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from views.QtFiles.qrc_files import resources_rc
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow:QMainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(616, 317)
+        MainWindow.setWindowModality(Qt.WindowModality.NonModal)
+        MainWindow.resize(616, 317)
+        icon = QIcon()
+        icon.addFile(u":/icon/Images/grid.ico", QSize(), QIcon.Normal, QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(u"#MainWindow{\n"
 "background-color: #d3d3d3;\n"
 "\n"
@@ -123,6 +134,9 @@ class Ui_MainWindow(object):
 "QTableCornerButton::section {\n"
 "background-color: #85939a;\n"
 "}\n"
+"QTableWidget::item{\n"
+"color:#fff\n"
+"}\n"
 "QTableWidget::item::hover{\n"
 "background-color: #B6BEC2\n"
 "}\n"
@@ -209,6 +223,9 @@ class Ui_MainWindow(object):
         self.table_solution_matrix_combobox = QComboBox(self.table_buttons_frame)
         self.table_solution_matrix_combobox.addItem("")
         self.table_solution_matrix_combobox.addItem("")
+        self.table_solution_matrix_combobox.addItem("")
+        self.table_solution_matrix_combobox.setItemData(1,"reduccion")
+        self.table_solution_matrix_combobox.setItemData(2,"vxv")
         self.table_solution_matrix_combobox.setObjectName(u"table_solution_matrix_combobox")
         self.table_solution_matrix_combobox.setStyleSheet(u"")
 
@@ -264,13 +281,14 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.row_spinbox.setValue(3)
+        self.column_spinbox.setValue(3)
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, MainWindow:QMainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Calculadora de matrices", None))
         self.row_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Filas", None))
         self.column_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Columnas", None))
@@ -279,6 +297,7 @@ class Ui_MainWindow(object):
         self.table_update_button.setText(QCoreApplication.translate("MainWindow", u"Actualizar", None))
         self.table_solution_matrix_combobox.setItemText(0, QCoreApplication.translate("MainWindow", u"Resolver por", None))
         self.table_solution_matrix_combobox.setItemText(1, QCoreApplication.translate("MainWindow", u"Reducci\u00f3n", None))
+        self.table_solution_matrix_combobox.setItemText(2, QCoreApplication.translate("MainWindow", u"Vectores", None))
 
         self.table_random_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Matriz aleatoria", None))
         self.table_solve_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Resolver", None))

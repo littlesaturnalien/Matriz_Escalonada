@@ -1,8 +1,11 @@
 <RCC>
   <qresource prefix="icon">
+    <file>Images/icon.ico</file>
     <file>Images/arrow_left.png</file>
     <file>Images/arrow_right.png</file>
     <file>Images/arrow_downwards.png</file>
     <file>Images/arrow_upwards.png</file>
+    <file>Images/grid.ico</file>
+    <file>Images/math.ico</file>
   </qresource>
 </RCC>

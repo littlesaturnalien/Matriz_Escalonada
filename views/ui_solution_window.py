@@ -8,17 +8,22 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication,QMetaObject, Qt)
+from PySide6.QtCore import (QCoreApplication,QMetaObject, Qt,QSize)
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QHBoxLayout, QLabel,QListWidget, QPushButton,
     QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
     QWidget)
 from views.QtFiles.qrc_files import resources_rc
-
+from copy import deepcopy
 class Ui_main_widget(object):
+    
     def setupUi(self, main_widget:QWidget):
         if not main_widget.objectName():
             main_widget.setObjectName(u"main_widget")
         main_widget.resize(600, 450)
+        icon = QIcon()
+        icon.addFile(u":/icon/Images/grid.ico", QSize(), QIcon.Normal, QIcon.Off)
+        main_widget.setWindowIcon(icon)
         main_widget.setStyleSheet(u"#Main_widget{\n"
 "background-color: #d3d3d3;\n"
 "\n"

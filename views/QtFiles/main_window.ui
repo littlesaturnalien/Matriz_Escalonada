@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModality::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +15,10 @@
   </property>
   <property name="windowTitle">
    <string>Calculadora de matrices</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qrc_files/resources.qrc">
+    <normaloff>:/icon/Images/grid.ico</normaloff>:/icon/Images/grid.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow{
@@ -114,6 +121,9 @@ background-color: #85939a;
 }
 QTableCornerButton::section {
 background-color: #85939a;
+}
+QTableWidget::item{
+color:#fff
 }
 QTableWidget::item::hover{
 background-color: #B6BEC2
@@ -282,6 +292,11 @@ background-color: #B6BEC2
               <item>
                <property name="text">
                 <string>Reducción</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Aplicar vector por vector</string>
                </property>
               </item>
              </widget>
