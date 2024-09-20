@@ -8,7 +8,7 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication,QMetaObject, Qt,QSize)
+from PySide6.QtCore import (QCoreApplication,QMetaObject, Qt,QSize,Slot)
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QHBoxLayout, QLabel,QListWidget, QPushButton,
     QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
@@ -207,6 +207,24 @@ class Ui_main_widget(object):
                     table_item = QTableWidgetItem()
                     table_item.setText(str(matriz[row][col]))
                     table_widget.setItem(row,col,table_item)
+
+    def show_step_property(self,index):
+        step = self.solution_window.tabWidget.currentWidget().property('step_data')
+        if step is not None:
+            self.solution_window.label.setText(step)
+            return
+        self.solution_window.label.setText('Informacion no encontrada')
+
+    @Slot()
+    def previous_tab(self):
+        current_index = self.solution_window.tabWidget.currentIndex()
+        if current_index > 0:
+            self.solution_window.tabWidget.setCurrentIndex(current_index-1)
+    @Slot()
+    def next_tab(self):
+        current_index = self.solution_window.tabWidget.currentIndex()
+        if current_index < self.solution_window.tabWidget.count()-1:
+            self.solution_window.tabWidget.setCurrentIndex(current_index+1)
 
     def retranslateUi(self, main_widget):
         main_widget.setWindowTitle(QCoreApplication.translate("main_widget", u"Form", None))

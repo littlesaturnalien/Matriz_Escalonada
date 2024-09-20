@@ -235,6 +235,16 @@ class GaussJordan():
         return matriz
     
     @staticmethod
-    def get_scalar(row_vector,column_vector):
+    def get_vxv_scalar(row_vector,column_vector):
         scalar = sum([row * column for row,column in zip(row_vector,column_vector)])
         return scalar
+    
+    def get_mxv_scalar(matrix_vectors:list[list],column_vector:list) -> list:
+        scalar_vector = list()
+        for row in matrix_vectors:
+            scalar_product = sum(row[i] * column_vector[i] for i in range(len(column_vector)))
+            scalar_vector.append(scalar_product)
+        return scalar_vector
+                
+    
+                
