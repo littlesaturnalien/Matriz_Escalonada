@@ -23,6 +23,9 @@ from views.QtFiles.qrc_files import resources_rc
 from views.message_box import warning_box
 from random import randint
 class Ui_MainWindow(object):
+    def __init__(self,Mainwindow):
+        self.setupUi(Mainwindow)
+
     def setupUi(self, MainWindow:QMainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")

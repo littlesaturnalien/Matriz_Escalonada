@@ -3,15 +3,15 @@ from views.ui_main_window import Ui_MainWindow
 from views.ui_solution_window import Ui_main_widget as Ui_solution
 from views.ui_vector_window import Ui_main_widget as Ui_vector
 from models.GaussJordan import GaussJordan
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot,Qt
 from PySide6.QtWidgets import QTableWidgetItem,QMainWindow,QWidget
 from random import randint
 
 class MatrixController():
-    def __init__(self):
-        self.main_window = Ui_MainWindow()
+    def __init__(self,MainWindow):
+        self.main_window = Ui_MainWindow(MainWindow)
         self.connect_main_window_buttons()
-        self.fill_table_widgets()
+        self.main_window.fill_table_widgets()
         self.main_window.input_table.resizeColumnsToContents()
         
     def connect_main_window_buttons(self):
@@ -19,7 +19,7 @@ class MatrixController():
         self.main_window.table_fill_0_button.clicked.connect(self.main_window.fill_matrix_0)
         self.main_window.table_clean_matrix_button.clicked.connect(self.main_window.clean_matrix)
         self.main_window.table_random_matrix_button.clicked.connect(self.main_window.random_matrix)
-        self.main_window.table_solve_matrix_button.clicked.connect(self.main_window.solution_tab)
+        self.main_window.table_solve_matrix_button.clicked.connect(self.solution_tab)
 
     @Slot()
     def solution_tab(self):
@@ -44,15 +44,15 @@ class MatrixController():
         self.window = QWidget()
         self.solution_window.setupUi(self.window)
         self.window.setWindowTitle(u'Solución detallada')
-        self.solution_window.create_tab_solutions(matrix.gauss_jordan())
+        self.solution_window.create_tab_solutions  (matrix.gauss_jordan())
         self.connect_solution_window_buttons()
         self.window.show()
 
     @Slot()
     def connect_solution_window_buttons(self):
-        self.solution_window.tabWidget.currentChanged.connect(self.show_step_property)
-        self.solution_window.next_tab_button.clicked.connect(self.next_tab)
-        self.solution_window.back_tab_button.clicked.connect(self.previous_tab)
+        self.solution_window.tabWidget.currentChanged.connect(self.solution_window.show_step_property)
+        self.solution_window.next_tab_button.clicked.connect(self.solution_window.next_tab)
+        self.solution_window.back_tab_button.clicked.connect(self.solution_window.previous_tab)
 
     def open_vector_window(self,matriz:GaussJordan):
         self.vector_window = Ui_vector(matriz.matriz)
@@ -62,30 +62,46 @@ class MatrixController():
         self.window.show()
     
     def connect_vector_window_buttons(self):
-        self.vector_window.vxv_row_spinbox.valueChanged.connect(self.change_row_vector)
-        self.vector_window.vxv_solve_scalar_button.clicked.connect(self.get_scalar)
+        self.vector_window.vxv_row_spinbox.valueChanged.connect(self.vxv_change_row_vector)
+        self.vector_window.vxv_solve_scalar_button.clicked.connect(self.vxv_show_scalar)
+        self.vector_window.mxv_solution_button.clicked.connect(self.mxv_show_scalar)
 
     @Slot()
-    def change_row_vector(self): # Continue here
+    def vxv_change_row_vector(self):
         row_number = self.vector_window.vxv_row_spinbox.value()
         if row_number <= 0:
             self.vector_window.vxv_row_spinbox.setValue(0)
-            return;
+            return
         if row_number > len(self.vector_window.matrix_instance): 
             self.vector_window.vxv_row_spinbox.setValue(row_number-1)
             return
-        self.vector_window.set_vector_row(self.vector_window.matrix_instance[row_number-1])
+        self.vector_window.vxv_set_vector_row(self.vector_window.matrix_instance[row_number-1])
+
     @Slot()
-    def get_scalar(self):
+    def vxv_show_scalar(self):
         column_vector = self.get_vxv_column_vector()
         if column_vector is None:return
         row_vector = self.get_vxv_row_vector()
         if row_vector is None: return
-        scalar = GaussJordan.get_scalar(row_vector,column_vector)
+        scalar = GaussJordan.vxv_get_scalar(row_vector,column_vector)
         row = self.vector_window.vxv_row_spinbox.value()
         self.vector_window.scalar_label.setText(f'Vector fila {row} X vector columna b: {scalar}')
 
-    def get_vxv_column_vector(self):
+    @Slot()
+    def mxv_show_scalar(self):
+        column_vector = self.mxv_get_column_vector()
+        if column_vector is None:return
+        matrix_vectors = self.vector_window.matrix_instance
+        vector_scalar = GaussJordan.mxv_get_scalar(matrix_vectors,column_vector)
+        for row in range(len(vector_scalar)):
+            table_item = self.vector_window.mxv_scalar.item(row,0)
+            if table_item is None:
+                table_item = QTableWidgetItem()
+                table_item.setFlags(Qt.ItemIsEnabled)
+                self.vector_window.mxv_scalar.setItem(row,0,table_item)
+            table_item.setText(f'{vector_scalar[row]}')
+    
+    def vxv_get_column_vector(self):
         vector = list()
         for row in range(self.vector_window.vxv_column_vector.rowCount()):
             table_item = self.vector_window.vxv_column_vector.item(row,0)
@@ -102,7 +118,7 @@ class MatrixController():
                 return
         return vector
     
-    def get_vxv_row_vector(self):
+    def vxv_get_row_vector(self):
         vector = list()
         for column in range(self.vector_window.vxv_row_vector.columnCount()):
             table_item = self.vector_window.vxv_row_vector.item(0,column)
@@ -113,6 +129,24 @@ class MatrixController():
                 return
         return vector
     
+    def mxv_get_column_vector(self):
+        vector = list()
+        for row in range(self.vector_window.mxv_column_vector.rowCount()):
+            table_item = self.vector_window.mxv_column_vector.item(row,0)
+            if table_item is None:
+                warning_box('Vector columna incompleto')
+                return
+            try:
+                vector.append(float(table_item.text()))
+            except ValueError:
+                warning_box(f'Fila {row+1}: {table_item.text()} no es un número')
+                return
+            except Exception as e:
+                warning_box(f'Error inesperado: {e}')
+                return
+        return vector
+
+
     @staticmethod
     def __valid_matriz(matriz: list[list]) ->bool:
         if matriz == []:

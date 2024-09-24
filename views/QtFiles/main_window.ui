@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
-    <height>317</height>
+    <width>652</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -137,7 +137,7 @@ background-color: #B6BEC2
    <layout class="QVBoxLayout" name="centralwidget_layout" stretch="0">
     <item>
      <widget class="QWidget" name="table_widget" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,100">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="10,100">
        <item>
         <widget class="QFrame" name="table_buttons_frame">
          <property name="frameShape">
@@ -246,36 +246,13 @@ background-color: #B6BEC2
             <property name="horizontalSpacing">
              <number>6</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="table_fill_0_button">
+            <item row="1" column="2">
+             <widget class="QPushButton" name="table_solve_matrix_button">
               <property name="styleSheet">
                <string notr="true"/>
               </property>
               <property name="text">
-               <string>Rellenar espacios con 0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="table_clean_matrix_button">
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>Limpiar Matriz</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="table_update_button">
-              <property name="layoutDirection">
-               <enum>Qt::LayoutDirection::LeftToRight</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>Actualizar</string>
+               <string>Resolver</string>
               </property>
              </widget>
             </item>
@@ -301,6 +278,16 @@ background-color: #B6BEC2
               </item>
              </widget>
             </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="table_clean_matrix_button">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>Limpiar Matriz</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="2">
              <widget class="QPushButton" name="table_random_matrix_button">
               <property name="styleSheet">
@@ -311,13 +298,26 @@ background-color: #B6BEC2
               </property>
              </widget>
             </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="table_solve_matrix_button">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="table_fill_0_button">
               <property name="styleSheet">
                <string notr="true"/>
               </property>
               <property name="text">
-               <string>Resolver</string>
+               <string>Rellenar espacios con 0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="table_update_button">
+              <property name="layoutDirection">
+               <enum>Qt::LayoutDirection::LeftToRight</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>Actualizar</string>
               </property>
              </widget>
             </item>
@@ -367,7 +367,6 @@ background-color: #B6BEC2
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
   <include location="qrc_files/resources.qrc"/>

@@ -14,7 +14,6 @@ from PySide6.QtWidgets import (QHBoxLayout, QLabel,QListWidget, QPushButton,
     QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
     QWidget)
 from views.QtFiles.qrc_files import resources_rc
-from copy import deepcopy
 class Ui_main_widget(object):
     
     def setupUi(self, main_widget:QWidget):
@@ -209,22 +208,22 @@ class Ui_main_widget(object):
                     table_widget.setItem(row,col,table_item)
 
     def show_step_property(self,index):
-        step = self.solution_window.tabWidget.currentWidget().property('step_data')
+        step = self.tabWidget.currentWidget().property('step_data')
         if step is not None:
-            self.solution_window.label.setText(step)
+            self.label.setText(step)
             return
-        self.solution_window.label.setText('Informacion no encontrada')
+        self.label.setText('Informacion no encontrada')
 
     @Slot()
     def previous_tab(self):
-        current_index = self.solution_window.tabWidget.currentIndex()
+        current_index = self.tabWidget.currentIndex()
         if current_index > 0:
-            self.solution_window.tabWidget.setCurrentIndex(current_index-1)
+            self.tabWidget.setCurrentIndex(current_index-1)
     @Slot()
     def next_tab(self):
-        current_index = self.solution_window.tabWidget.currentIndex()
-        if current_index < self.solution_window.tabWidget.count()-1:
-            self.solution_window.tabWidget.setCurrentIndex(current_index+1)
+        current_index = self.tabWidget.currentIndex()
+        if current_index < self.tabWidget.count()-1:
+            self.tabWidget.setCurrentIndex(current_index+1)
 
     def retranslateUi(self, main_widget):
         main_widget.setWindowTitle(QCoreApplication.translate("main_widget", u"Form", None))
