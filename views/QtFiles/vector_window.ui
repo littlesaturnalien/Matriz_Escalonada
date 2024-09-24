@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>417</width>
+    <width>390</width>
     <height>382</height>
    </rect>
   </property>
@@ -874,6 +874,9 @@ max-width:10px;
                    <property name="text">
                     <string/>
                    </property>
+                   <property name="flags">
+                    <set>ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+                   </property>
                   </item>
                  </widget>
                 </item>
@@ -1037,7 +1040,7 @@ max-width:10px;
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item alignment="Qt::AlignmentFlag::AlignLeft">
+             <item alignment="Qt::AlignmentFlag::AlignHCenter">
               <widget class="QPushButton" name="mxv_solution_button">
                <property name="text">
                 <string>Escalares</string>

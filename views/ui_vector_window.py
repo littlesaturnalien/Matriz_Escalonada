@@ -10,7 +10,7 @@
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+    QSize, QTime, QUrl, Qt,Slot)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
@@ -637,15 +637,25 @@ class Ui_main_widget(object):
         self.vxv_resize_vector_column()
         self.vxv_resize_vector_row()
         self.vxv_set_vector_row(self.matrix_instance[0])
+        self.mxv_resize_column_vector()
         self.set_matrix_vectors()
         self.tab_widget.setCurrentIndex(0)
         self.vxv_row_spinbox.setValue(1)
+
+        self.mxv_column_add_vector_button.clicked.connect(self.add_vector)
+        self.mxv_column_substact_vector_button.clicked.connect(self.delete_vector)
         self.retranslateUi(main_widget)
-
-
         QMetaObject.connectSlotsByName(main_widget)
     # setupUi
-    
+    def mxv_resize_column_vector(self):
+        rows = len(self.matrix_instance[0])
+        self.mxv_column_vector_table.setRowCount(rows)
+        table_header = self.mxv_column_vector_table.horizontalHeaderItem(0)
+        if table_header is None:
+            table_header = QTableWidgetItem()
+            self.mxv_column_vector_table.setHorizontalHeaderItem(0,table_header)
+        table_header.setText("v1")
+
     def vxv_set_vector_row(self,vector:list[int|float]):
         for i in range(self.vxv_row_vector.columnCount()):
             table_item = self.vxv_row_vector.item(0,i)
@@ -701,8 +711,25 @@ class Ui_main_widget(object):
                 table_item:QTableWidgetItem = self.mxv_row_vector.item(row,col)
                 if table_item is None:
                     table_item = QTableWidgetItem()
+                    table_item.setFlags(Qt.ItemIsDragEnabled|Qt.ItemIsDropEnabled|Qt.ItemIsUserCheckable|Qt.ItemIsEnabled)
                     self.mxv_row_vector.setItem(row,col,table_item)
                 table_item.setText(str(self.matrix_instance[row][col]))
+
+    @Slot()
+    def add_vector(self):
+        column_count = self.mxv_column_vector_table.columnCount()
+        self.mxv_column_vector_table.setColumnCount(column_count+1)
+        table_header = self.mxv_column_vector_table.horizontalHeaderItem(column_count+1)
+        if table_header is None:
+            table_header = QTableWidgetItem()
+            self.mxv_column_vector_table.setHorizontalHeaderItem(column_count,table_header)
+        table_header.setText(f"v{column_count+1}")
+
+    @Slot()
+    def delete_vector(self):
+        column_count = self.mxv_column_vector_table.columnCount()
+        if column_count <=1:return
+        self.mxv_column_vector_table.setColumnCount(column_count-1)
 
     def retranslateUi(self, main_widget):
         main_widget.setWindowTitle(QCoreApplication.translate("main_widget", u"Vectores", None))
@@ -723,6 +750,7 @@ class Ui_main_widget(object):
         self.mxv_row_vector_2.setSortingEnabled(__sortingEnabled1)
 
         self.label_2.setText(QCoreApplication.translate("main_widget", u"Vector", None))
+        self.mxm_solve_scalar_button.setText(QCoreApplication.translate("main_widget", u"Obtener vector escalar", None))
         self.tab_widget.setTabText(self.tab_widget.indexOf(self.matrix_x_matrix_widget), QCoreApplication.translate("main_widget", u"Matriz por matriz", None))
 #if QT_CONFIG(accessibility)
         self.matrix_x_vector_widget.setAccessibleName(QCoreApplication.translate("main_widget", u"asd", None))
@@ -734,6 +762,8 @@ class Ui_main_widget(object):
         self.mxv_row_vector.setSortingEnabled(__sortingEnabled2)
 
         self.mxv_column_substact_vector_button.setText("")
+        self.mxv_column_vector_label.setText(QCoreApplication.translate("main_widget", u"Vectores", None))
         self.mxv_column_add_vector_button.setText("")
+        self.mxv_solution_button.setText(QCoreApplication.translate("main_widget", u"Escalares", None))
         self.tab_widget.setTabText(self.tab_widget.indexOf(self.matrix_x_vector_widget), QCoreApplication.translate("main_widget", u"Matriz por vector", None))
 

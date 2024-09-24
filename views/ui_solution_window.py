@@ -11,7 +11,7 @@
 from PySide6.QtCore import (QCoreApplication,QMetaObject, Qt,QSize,Slot)
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QHBoxLayout, QLabel,QListWidget, QPushButton,
-    QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
+    QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,QTextEdit,
     QWidget)
 from views.QtFiles.qrc_files import resources_rc
 class Ui_main_widget(object):
@@ -187,12 +187,14 @@ class Ui_main_widget(object):
                 table_header = QTableWidgetItem()
                 table_widget.setVerticalHeaderItem(row,table_header)
             table_header.setText(str(row+1))
+
         for col in range(length):
             table_header = table_widget.horizontalHeaderItem(col)
             if table_header is None:
                 table_header = QTableWidgetItem()
                 table_widget.setHorizontalHeaderItem(col,table_header)
             table_header.setText(f'X{col+1}')
+
         last_table_header = table_widget.horizontalHeaderItem(col-1)
         if last_table_header is None:
             last_table_header = QTableWidgetItem()
@@ -205,8 +207,34 @@ class Ui_main_widget(object):
                 if table_item is None:
                     table_item = QTableWidgetItem()
                     table_item.setText(str(matriz[row][col]))
+                    table_item.setFlags(Qt.ItemIsDragEnabled|Qt.ItemIsDropEnabled|Qt.ItemIsUserCheckable|Qt.ItemIsEnabled)
                     table_widget.setItem(row,col,table_item)
 
+    def create_scalar(self,scalar, table_widget:QTableWidget):
+        width = len(scalar)
+        table_widget.setRowCount(width)
+        table_widget.setColumnCount(1)
+        for row in range(width):
+            table_header = table_widget.verticalHeaderItem(row)
+            if table_header is None:
+                table_header = QTableWidgetItem()
+                table_widget.setVerticalHeaderItem(row,table_header)
+            table_header.setText(str(row+1))
+
+        last_table_header = table_widget.horizontalHeaderItem(0)
+        if last_table_header is None:
+            last_table_header = QTableWidgetItem()
+            table_widget.setHorizontalHeaderItem(0,last_table_header)
+        table_header.setText(f'b')
+
+        for row in range(width):
+            table_item = table_widget.item(row,0)
+            if table_item is None:
+                table_item = QTableWidgetItem()
+                table_item.setText(str(scalar[row]))
+                table_widget.setItem(row,0,table_item)
+            table_item.setFlags(Qt.ItemIsDragEnabled|Qt.ItemIsDropEnabled|Qt.ItemIsUserCheckable|Qt.ItemIsEnabled)
+        
     def show_step_property(self,index):
         step = self.tabWidget.currentWidget().property('step_data')
         if step is not None:
@@ -224,6 +252,18 @@ class Ui_main_widget(object):
         current_index = self.tabWidget.currentIndex()
         if current_index < self.tabWidget.count()-1:
             self.tabWidget.setCurrentIndex(current_index+1)
+
+    def create_scalar_solution(self,config):
+        self.create_tab()
+        self.create_scalar(config,self.s_table)
+
+    def create_tab(self):
+        self.p = QWidget()
+        self.verticalLayout = QVBoxLayout(self.p)
+        self.verticalLayout.setContentsMargins(0,0,0,0)
+        self.s_table = QTableWidget(self.p)
+        self.verticalLayout.addWidget(self.s_table)
+        self.tabWidget.addTab(self.p,'Escalar')
 
     def retranslateUi(self, main_widget):
         main_widget.setWindowTitle(QCoreApplication.translate("main_widget", u"Form", None))

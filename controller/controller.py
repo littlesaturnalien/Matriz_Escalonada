@@ -79,27 +79,24 @@ class MatrixController():
 
     @Slot()
     def vxv_show_scalar(self):
-        column_vector = self.get_vxv_column_vector()
+        column_vector = self.vxv_get_column_vector()
         if column_vector is None:return
-        row_vector = self.get_vxv_row_vector()
+        row_vector = self.vxv_get_row_vector()
         if row_vector is None: return
         scalar = GaussJordan.vxv_get_scalar(row_vector,column_vector)
         row = self.vector_window.vxv_row_spinbox.value()
-        self.vector_window.scalar_label.setText(f'Vector fila {row} X vector columna b: {scalar}')
+        self.vector_window.vxv_scalar_label.setText(f'Vector fila {row} X vector columna b: {scalar}')
 
     @Slot()
     def mxv_show_scalar(self):
-        column_vector = self.mxv_get_column_vector()
-        if column_vector is None:return
-        matrix_vectors = self.vector_window.matrix_instance
-        vector_scalar = GaussJordan.mxv_get_scalar(matrix_vectors,column_vector)
-        for row in range(len(vector_scalar)):
-            table_item = self.vector_window.mxv_scalar.item(row,0)
-            if table_item is None:
-                table_item = QTableWidgetItem()
-                table_item.setFlags(Qt.ItemIsEnabled)
-                self.vector_window.mxv_scalar.setItem(row,0,table_item)
-            table_item.setText(f'{vector_scalar[row]}')
+        vector = self.mxv_get_column_vector() if self.vector_window.mxv_column_vector_table.columnCount() == 1 else self.mxv_get_matrix_vector() 
+        if vector is None:return  
+        self.solution_scalar_window = Ui_solution()
+        self.scalar_window = QWidget()
+        self.solution_scalar_window.setupUi(self.scalar_window)
+        self.scalar_window.setWindowTitle(u"Escalares")
+        self.solution_scalar_window.create_scalar_solution(GaussJordan.mxv_get_scalar(self.vector_window.matrix_instance,vector))
+        self.scalar_window.show()
     
     def vxv_get_column_vector(self):
         vector = list()
@@ -131,8 +128,8 @@ class MatrixController():
     
     def mxv_get_column_vector(self):
         vector = list()
-        for row in range(self.vector_window.mxv_column_vector.rowCount()):
-            table_item = self.vector_window.mxv_column_vector.item(row,0)
+        for row in range(self.vector_window.mxv_column_vector_table.rowCount()):
+            table_item = self.vector_window.mxv_column_vector_table.item(row,0)
             if table_item is None:
                 warning_box('Vector columna incompleto')
                 return
@@ -145,6 +142,28 @@ class MatrixController():
                 warning_box(f'Error inesperado: {e}')
                 return
         return vector
+
+    def mxv_get_matrix_vector(self):
+        matrix = [] 
+        for row in range(self.vector_window.mxv_column_vector_table.rowCount()):
+            vector = []  
+            for col in range(self.vector_window.mxv_column_vector_table.columnCount()):
+                table_item = self.vector_window.mxv_column_vector_table.item(row, col)
+                if table_item is None:
+                    warning_box('Vector columna incompleto')
+                    return  
+                try:
+                    vector.append(float(table_item.text()))  
+                except ValueError:
+                    warning_box(f'Fila {row + 1}: {table_item.text()} no es un número')
+                    return  
+                except Exception as e:
+                    warning_box(f'Error inesperado: {e}')
+                    return 
+
+            matrix.append(vector) 
+
+        return matrix 
 
 
     @staticmethod

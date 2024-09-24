@@ -240,11 +240,14 @@ class GaussJordan():
         return scalar
     
     @staticmethod
-    def mxv_get_scalar(matrix_vectors:list[list],column_vector:list) -> list:
+    def mxv_get_scalar(matrix_vectors:list[list],column_vector:list|list[list]) -> list:
         scalar_vector = list()
+        if isinstance(column_vector[0],list):
+            column_vector = [sum(vector) for vector in column_vector]
         for row in matrix_vectors:
             scalar_product = sum(row[i] * column_vector[i] for i in range(len(column_vector)))
             scalar_vector.append(scalar_product)
+
         return scalar_vector
                 
     
