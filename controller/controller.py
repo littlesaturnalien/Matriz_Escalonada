@@ -15,11 +15,15 @@ class MatrixController():
         self.main_window.input_table.resizeColumnsToContents()
         
     def connect_main_window_buttons(self):
-        self.main_window.table_update_button.clicked.connect(self.main_window.resize_matrix)
+        self.main_window.table_update_button.clicked.connect(lambda: self.main_window.resize_matrix(
+            self.main_window.column_spinbox.value(),
+            self.main_window.row_spinbox.value()
+        ))
         self.main_window.table_fill_0_button.clicked.connect(self.main_window.fill_matrix_0)
         self.main_window.table_clean_matrix_button.clicked.connect(self.main_window.clean_matrix)
         self.main_window.table_random_matrix_button.clicked.connect(self.main_window.random_matrix)
-        self.main_window.table_solve_matrix_button.clicked.connect(self.solution_tab)
+        self.main_window.table_solve_matrix_button.clicked.connect(lambda: self.solution_tab())
+        self.main_window.table_transposition_button.clicked.connect(lambda: self.mostrar_matriz_transpuesta())
 
     @Slot()
     def solution_tab(self):
@@ -164,7 +168,20 @@ class MatrixController():
             matrix.append(vector) 
 
         return matrix 
-
+    
+    def mostrar_matriz_transpuesta(self):
+        matriz = self.main_window.generate_matrix()
+        if matriz == None:
+            warning_box("No se pudo generar esta tabla")
+            return
+        if not MatrixController.__valid_matriz(matriz):
+            return
+        matriz_transpuesta = GaussJordan.obtener_matriz_transpuesta(matriz)
+        self.main_window.column_spinbox.setValue(len(matriz_transpuesta[0]))
+        self.main_window.row_spinbox.setValue(len(matriz_transpuesta))
+        self.main_window.resize_matrix(self.main_window.column_spinbox.value(),self.main_window.row_spinbox.value())
+        self.main_window.insertar_matriz(matriz_transpuesta)
+        self.main_window.input_table.resizeColumnsToContents()
 
     @staticmethod
     def __valid_matriz(matriz: list[list]) ->bool:

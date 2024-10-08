@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main_window.ui'
+## Form generated from reading UI file 'main_windowAdKMnN.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -17,21 +17,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
     QHBoxLayout, QHeaderView, QLabel, QMainWindow,
-    QPushButton, QSizePolicy, QSpinBox, QStatusBar,
-    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
-from views.QtFiles.qrc_files import resources_rc
+    QPushButton, QSizePolicy, QSpinBox, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 from views.message_box import warning_box
 from random import randint
+from views.QtFiles.qrc_files import resources_rc
 class Ui_MainWindow(object):
     def __init__(self,Mainwindow):
         self.setupUi(Mainwindow)
-
-    def setupUi(self, MainWindow:QMainWindow):
+    def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(616, 317)
         MainWindow.setWindowModality(Qt.WindowModality.NonModal)
-        MainWindow.resize(616, 317)
+        MainWindow.resize(675, 270)
         icon = QIcon()
         icon.addFile(u":/icon/Images/grid.ico", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -64,15 +62,15 @@ class Ui_MainWindow(object):
 "image:url(:/icon/Images/arrow_upwards.png);\n"
 "border-left:0.5px solid #fff;\n"
 "subcontrol-position:right;\n"
-"width: 20px;\n"
-"height: 20px;\n"
+"width: 15px;\n"
+"height: 15px;\n"
 "}\n"
 "QSpinBox:down-button{\n"
 "image:url(:/icon/Images/arrow_downwards.png);\n"
 "border-right:0.5px solid #fff;\n"
 "subcontrol-position:left;\n"
-"width:20px;\n"
-"height:20px\n"
+"width:15px;\n"
+"height:15px\n"
 "}\n"
 "QSpinBox:up-button:hover{\n"
 "background-color: #5c636f;\n"
@@ -169,11 +167,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setContentsMargins(9, 9, 9, 9)
         self.row_spinbox_label = QLabel(self.table_row_spinbox_widget)
         self.row_spinbox_label.setObjectName(u"row_spinbox_label")
+        self.row_spinbox_label.setMaximumSize(QSize(16777215, 20))
 
         self.verticalLayout_3.addWidget(self.row_spinbox_label, 0, Qt.AlignmentFlag.AlignHCenter)
 
         self.row_spinbox = QSpinBox(self.table_row_spinbox_widget)
         self.row_spinbox.setObjectName(u"row_spinbox")
+        self.row_spinbox.setMinimumSize(QSize(60, 0))
         self.row_spinbox.setStyleSheet(u"border-color: rgb(0, 0, 0);")
         self.row_spinbox.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -189,6 +189,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setContentsMargins(9, 9, 9, 9)
         self.column_spinbox_label = QLabel(self.table_column_spinbox_widget)
         self.column_spinbox_label.setObjectName(u"column_spinbox_label")
+        self.column_spinbox_label.setMaximumSize(QSize(16777215, 20))
 
         self.verticalLayout.addWidget(self.column_spinbox_label, 0, Qt.AlignmentFlag.AlignHCenter)
 
@@ -205,6 +206,13 @@ class Ui_MainWindow(object):
         self.table_grid_options.setObjectName(u"table_grid_options")
         self.table_grid_options.setHorizontalSpacing(6)
         self.table_grid_options.setContentsMargins(9, 9, 9, 9)
+        self.table_update_button = QPushButton(self.table_buttons_frame)
+        self.table_update_button.setObjectName(u"table_update_button")
+        self.table_update_button.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.table_update_button.setStyleSheet(u"")
+
+        self.table_grid_options.addWidget(self.table_update_button, 0, 0, 1, 1)
+
         self.table_fill_0_button = QPushButton(self.table_buttons_frame)
         self.table_fill_0_button.setObjectName(u"table_fill_0_button")
         self.table_fill_0_button.setStyleSheet(u"")
@@ -217,12 +225,11 @@ class Ui_MainWindow(object):
 
         self.table_grid_options.addWidget(self.table_clean_matrix_button, 1, 0, 1, 1)
 
-        self.table_update_button = QPushButton(self.table_buttons_frame)
-        self.table_update_button.setObjectName(u"table_update_button")
-        self.table_update_button.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.table_update_button.setStyleSheet(u"")
+        self.table_random_matrix_button = QPushButton(self.table_buttons_frame)
+        self.table_random_matrix_button.setObjectName(u"table_random_matrix_button")
+        self.table_random_matrix_button.setStyleSheet(u"")
 
-        self.table_grid_options.addWidget(self.table_update_button, 0, 0, 1, 1)
+        self.table_grid_options.addWidget(self.table_random_matrix_button, 0, 2, 1, 1)
 
         self.table_solution_matrix_combobox = QComboBox(self.table_buttons_frame)
         self.table_solution_matrix_combobox.addItem("")
@@ -233,19 +240,18 @@ class Ui_MainWindow(object):
         self.table_solution_matrix_combobox.setObjectName(u"table_solution_matrix_combobox")
         self.table_solution_matrix_combobox.setStyleSheet(u"")
 
-        self.table_grid_options.addWidget(self.table_solution_matrix_combobox, 1, 1, 1, 1)
+        self.table_grid_options.addWidget(self.table_solution_matrix_combobox, 1, 2, 1, 1)
 
-        self.table_random_matrix_button = QPushButton(self.table_buttons_frame)
-        self.table_random_matrix_button.setObjectName(u"table_random_matrix_button")
-        self.table_random_matrix_button.setStyleSheet(u"")
+        self.table_transposition_button = QPushButton(self.table_buttons_frame)
+        self.table_transposition_button.setObjectName(u"table_transposition_button")
 
-        self.table_grid_options.addWidget(self.table_random_matrix_button, 0, 2, 1, 1)
+        self.table_grid_options.addWidget(self.table_transposition_button, 1, 1, 1, 1)
 
         self.table_solve_matrix_button = QPushButton(self.table_buttons_frame)
         self.table_solve_matrix_button.setObjectName(u"table_solve_matrix_button")
         self.table_solve_matrix_button.setStyleSheet(u"")
 
-        self.table_grid_options.addWidget(self.table_solve_matrix_button, 1, 2, 1, 1)
+        self.table_grid_options.addWidget(self.table_solve_matrix_button, 2, 0, 1, 3)
 
 
         self.table_buttons_horizontal_layout.addLayout(self.table_grid_options)
@@ -276,23 +282,49 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.input_table)
 
-        self.verticalLayout_2.setStretch(0, 1)
+        self.verticalLayout_2.setStretch(0, 10)
         self.verticalLayout_2.setStretch(1, 100)
 
         self.centralwidget_layout.addWidget(self.table_widget)
 
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QStatusBar(MainWindow)
-        self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
         self.row_spinbox.setValue(3)
         self.column_spinbox.setValue(3)
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
+
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Calculadora de matrices", None))
+        self.row_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Filas", None))
+        self.column_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Columnas", None))
+        self.table_update_button.setText(QCoreApplication.translate("MainWindow", u"Actualizar", None))
+        self.table_fill_0_button.setText(QCoreApplication.translate("MainWindow", u"Rellenar espacios con 0", None))
+        self.table_clean_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Limpiar Matriz", None))
+        self.table_random_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Matriz aleatoria", None))
+        self.table_solution_matrix_combobox.setItemText(0, QCoreApplication.translate("MainWindow", u"Resolver por", None))
+        self.table_solution_matrix_combobox.setItemText(1, QCoreApplication.translate("MainWindow", u"Reducci\u00f3n", None))
+        self.table_solution_matrix_combobox.setItemText(2, QCoreApplication.translate("MainWindow", u"Aplicar vector por vector", None))
+
+        self.table_transposition_button.setText(QCoreApplication.translate("MainWindow", u"Transponer Matriz", None))
+        self.table_solve_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Resolver", None))
+        ___qtablewidgetitem = self.input_table.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"X1", None));
+        ___qtablewidgetitem1 = self.input_table.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"X2", None));
+        ___qtablewidgetitem2 = self.input_table.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"b", None));
+
+        __sortingEnabled = self.input_table.isSortingEnabled()
+        self.input_table.setSortingEnabled(False)
+        self.input_table.setSortingEnabled(__sortingEnabled)
+
+    # retranslateUi
+
+
     @Slot()
-    def resize_matrix(self):
+    def resize_matrix(self,columns,rows):
         columns = self.column_spinbox.value()
         rows = self.row_spinbox.value()
         if rows <=0 or columns <=0:
@@ -354,6 +386,7 @@ class Ui_MainWindow(object):
                 if table_widget is None: 
                     table_widget =QTableWidgetItem()
                     self.input_table.setItem(row,col,table_widget)
+
     def generate_matrix(self) ->list[list] | None:
         matriz = []
         for row in range(self.input_table.rowCount()):
@@ -368,32 +401,17 @@ class Ui_MainWindow(object):
                 row_.append(num)
             matriz.append(row_)
         return matriz
-
-
-
-    def retranslateUi(self, MainWindow:QMainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Calculadora de matrices", None))
-        self.row_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Filas", None))
-        self.column_spinbox_label.setText(QCoreApplication.translate("MainWindow", u"Columnas", None))
-        self.table_fill_0_button.setText(QCoreApplication.translate("MainWindow", u"Rellenar espacios con 0", None))
-        self.table_clean_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Limpiar Matriz", None))
-        self.table_update_button.setText(QCoreApplication.translate("MainWindow", u"Actualizar", None))
-        self.table_solution_matrix_combobox.setItemText(0, QCoreApplication.translate("MainWindow", u"Resolver por", None))
-        self.table_solution_matrix_combobox.setItemText(1, QCoreApplication.translate("MainWindow", u"Reducci\u00f3n", None))
-        self.table_solution_matrix_combobox.setItemText(2, QCoreApplication.translate("MainWindow", u"Vectores", None))
-
-        self.table_random_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Matriz aleatoria", None))
-        self.table_solve_matrix_button.setText(QCoreApplication.translate("MainWindow", u"Resolver", None))
-        ___qtablewidgetitem = self.input_table.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"X1", None));
-        ___qtablewidgetitem1 = self.input_table.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"X2", None));
-        ___qtablewidgetitem2 = self.input_table.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"b", None));
-
-        __sortingEnabled = self.input_table.isSortingEnabled()
-        self.input_table.setSortingEnabled(False)
-        self.input_table.setSortingEnabled(__sortingEnabled)
-
-    # retranslateUi
+    
+    def insertar_matriz(self,matriz) ->None:
+        if len(matriz) != self.row_spinbox.value() or len(matriz[0]) != self.column_spinbox.value():
+            warning_box("Error inesperado")
+            return
+        for row in range(self.input_table.rowCount()):
+            for col in range(self.input_table.columnCount()):
+                table_widget = self.input_table.item(row,col)
+                if table_widget is None: 
+                    table_widget =QTableWidgetItem()
+                    self.input_table.setItem(row,col,table_widget)
+                table_widget.setText(str(matriz[row][col]))
+                
 

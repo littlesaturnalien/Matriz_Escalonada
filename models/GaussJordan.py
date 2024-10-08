@@ -1,4 +1,5 @@
 import copy
+from math import isclose
 
 class GaussJordan():
     def __init__(self, matriz) -> None:
@@ -7,6 +8,7 @@ class GaussJordan():
         self.filas = len(matriz) #Cantidad de filas
         self.columnas = len(matriz[0]) #Cantidad de columnas
         self.config = {}
+        self.tolerance = 1e-15
 
     @staticmethod
     def crear_matriz(cantFilas: int, cantColum: int) -> list[list[float]]:
@@ -114,7 +116,7 @@ class GaussJordan():
 
         pivote_fila = None
         for fila in self.filas_pivotes:
-            if self.matriz[fila][col] == 1:
+            if self.matriz[fila][col] == 1 and all(number !=1 for number in self.matriz[fila][:col]):
                 pivote_fila = fila
                 break
 
@@ -122,7 +124,11 @@ class GaussJordan():
             if fila == pivote_fila: continue
             if self.matriz[fila][col] == 0: continue
             operando = self.matriz[fila][col] * -1
-            self.matriz[fila] = [self.matriz[fila][i] + (operando * self.matriz[pivote_fila][i]) for i in range(self.columnas)]
+            self.matriz[fila] = [
+                    0 if isclose(self.matriz[fila][i] + (operando * self.matriz[pivote_fila][i]), 0, abs_tol=self.tolerance) 
+                    else self.matriz[fila][i] + (operando * self.matriz[pivote_fila][i]) 
+                    for i in range(self.columnas)
+                ]
 
             if operando > 0:
                 operador = "+"
@@ -233,7 +239,7 @@ class GaussJordan():
                 fila_str += f'{round(self.matriz[fila][columna], 3):<{maximo_tamaño_fila}}'
             matriz += fila_str + '\n'
         return matriz
-    
+
     @staticmethod
     def vxv_get_scalar(row_vector,column_vector):
         scalar = sum([row * column for row,column in zip(row_vector,column_vector)])
@@ -247,8 +253,12 @@ class GaussJordan():
         for row in matrix_vectors:
             scalar_product = sum(row[i] * column_vector[i] for i in range(len(column_vector)))
             scalar_vector.append(scalar_product)
-
         return scalar_vector
-                
     
+    @staticmethod
+    def obtener_matriz_transpuesta(normal_matrix) ->list[list]:
+        matriz_transpuesta = [[normal_matrix[fila][col] for fila in range(len(normal_matrix))] 
+                      for col in range(len(normal_matrix[0]))]
+
+        return matriz_transpuesta
                 

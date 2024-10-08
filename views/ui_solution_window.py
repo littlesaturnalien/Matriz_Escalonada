@@ -55,6 +55,7 @@ class Ui_main_widget(object):
 "QTableWidget{\n"
 "background-color: #819299; \n"
 "gridline-color: #fff;  \n"
+"color: #fff;\n"
 "}\n"
 "\n"
 "QHeaderView{\n"

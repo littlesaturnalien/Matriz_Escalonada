@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>652</width>
-    <height>520</height>
+    <width>675</width>
+    <height>270</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,15 +50,15 @@ QSpinBox:up-button{
 image:url(:/icon/Images/arrow_upwards.png);
 border-left:0.5px solid #fff;
 subcontrol-position:right;
-width: 20px;
-height: 20px;
+width: 15px;
+height: 15px;
 }
 QSpinBox:down-button{
 image:url(:/icon/Images/arrow_downwards.png);
 border-right:0.5px solid #fff;
 subcontrol-position:left;
-width:20px;
-height:20px
+width:15px;
+height:15px
 }
 QSpinBox:up-button:hover{
 background-color: #5c636f;
@@ -179,6 +179,12 @@ background-color: #B6BEC2
              </property>
              <item alignment="Qt::AlignmentFlag::AlignHCenter">
               <widget class="QLabel" name="row_spinbox_label">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
                <property name="text">
                 <string>Filas</string>
                </property>
@@ -186,6 +192,12 @@ background-color: #B6BEC2
              </item>
              <item>
               <widget class="QSpinBox" name="row_spinbox">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">border-color: rgb(0, 0, 0);</string>
                </property>
@@ -214,6 +226,12 @@ background-color: #B6BEC2
              </property>
              <item alignment="Qt::AlignmentFlag::AlignHCenter">
               <widget class="QLabel" name="column_spinbox_label">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
                <property name="text">
                 <string>Columnas</string>
                </property>
@@ -246,36 +264,27 @@ background-color: #B6BEC2
             <property name="horizontalSpacing">
              <number>6</number>
             </property>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="table_solve_matrix_button">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="table_update_button">
+              <property name="layoutDirection">
+               <enum>Qt::LayoutDirection::LeftToRight</enum>
+              </property>
               <property name="styleSheet">
                <string notr="true"/>
               </property>
               <property name="text">
-               <string>Resolver</string>
+               <string>Actualizar</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QComboBox" name="table_solution_matrix_combobox">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="table_fill_0_button">
               <property name="styleSheet">
                <string notr="true"/>
               </property>
-              <item>
-               <property name="text">
-                <string>Resolver por</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Reducción</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Aplicar vector por vector</string>
-               </property>
-              </item>
+              <property name="text">
+               <string>Rellenar espacios con 0</string>
+              </property>
              </widget>
             </item>
             <item row="1" column="0">
@@ -298,26 +307,42 @@ background-color: #B6BEC2
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="table_fill_0_button">
+            <item row="1" column="2">
+             <widget class="QComboBox" name="table_solution_matrix_combobox">
               <property name="styleSheet">
                <string notr="true"/>
               </property>
+              <item>
+               <property name="text">
+                <string>Resolver por</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Reducción</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Aplicar vector por vector</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="table_transposition_button">
               <property name="text">
-               <string>Rellenar espacios con 0</string>
+               <string>Transponer Matriz</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="table_update_button">
-              <property name="layoutDirection">
-               <enum>Qt::LayoutDirection::LeftToRight</enum>
-              </property>
+            <item row="2" column="0" colspan="3">
+             <widget class="QPushButton" name="table_solve_matrix_button">
               <property name="styleSheet">
                <string notr="true"/>
               </property>
               <property name="text">
-               <string>Actualizar</string>
+               <string>Resolver</string>
               </property>
              </widget>
             </item>
