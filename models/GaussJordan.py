@@ -228,6 +228,7 @@ class GaussJordan():
                 continue
             
             ecuacion += f" = {int(resultado) if resultado.is_integer() else f'{resultado:.1f}'}"
+
             print(ecuacion)
     
     def __str__(self) -> str:
